@@ -82,7 +82,7 @@ public class OthelloBoard {
 	 * alternation(row,col,drow,dcol)==P1, then placing P1 right before (row,col),
 	 * assuming that square is EMPTY, is a valid move, resulting in a collection of
 	 * P2 being flipped.
-	 * 
+	 *
 	 * @param row  starting row, in {0,...,dim-1} (typically {0,...,7})
 	 * @param col  starting col, in {0,...,dim-1} (typically {0,...,7})
 	 * @param drow the row direction, in {-1,0,1}
@@ -97,8 +97,7 @@ public class OthelloBoard {
 		char player = get(row, col);
 		char nextPiece = get(row + drow, col + dcol);
 		if (player == EMPTY || nextPiece == EMPTY) return EMPTY;
-		if (player == P1 && nextPiece == P2) return P2;
-		if (player == P2 && nextPiece == P1) return P1;
+		if (otherPlayer(player) == nextPiece) return nextPiece;
 		return EMPTY;
 	}
 
