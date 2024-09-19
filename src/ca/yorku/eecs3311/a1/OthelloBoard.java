@@ -92,6 +92,13 @@ public class OthelloBoard {
 	 *         alternation
 	 */
 	private char alternation(int row, int col, int drow, int dcol) {
+		if (drow < 0 || drow > 1) return EMPTY;
+		if (dcol < 0 || dcol > 1) return EMPTY;
+		char player = get(row, col);
+		char nextPiece = get(row + drow, col + dcol);
+		if (player == EMPTY || nextPiece == EMPTY) return EMPTY;
+		if (player == P1 && nextPiece == P2) return P2;
+		if (player == P2 && nextPiece == P1) return P1;
 		return EMPTY;
 	}
 
