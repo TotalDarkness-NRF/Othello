@@ -119,10 +119,10 @@ public class OthelloBoard {
 	private int flip(int row, int col, int drow, int dcol, char player) {
 		if (player != P1 && player != P2) return -1;
 		// TODO helper method for this check?
-		if (drow < 0 || drow > 1) return EMPTY;
-		if (dcol < 0 || dcol > 1) return EMPTY;
+		if (drow < -1 || drow > 1) return EMPTY;
+		if (dcol < -1 || dcol > 1) return EMPTY;
 		int count = 0;
-		if (player== hasMove(row, col, drow, dcol)) {
+		if (player == hasMove(row, col, drow, dcol)) {
 			char piece;
 			char otherPlayer = otherPlayer(player);
 			do {
@@ -220,10 +220,18 @@ public class OthelloBoard {
 	 * @return true if player moved successfully at (row,col), false otherwise
 	 */
 	public boolean move(int row, int col, char player) {
-		// HINT: Use some of the above helper methods to get this methods
-		// job done!!
-
-		return true;
+		if (player != P1 && player != P2) return false;
+		boolean hasFlipped = false;
+		for (int drow = -1; drow <= 1; drow++) {
+			for (int dcol = -1; dcol <= 1; dcol++) {
+				if (flip(row, col, drow, dcol, player) > 0) {
+					// TODO check if multiple flips in different direction can happen
+					board[row][col] = player;
+					hasFlipped = true;
+				}
+			}
+		}
+		return hasFlipped;
 	}
 
 	/**
