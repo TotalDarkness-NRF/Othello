@@ -94,6 +94,8 @@ public class OthelloBoard {
 	private char alternation(int row, int col, int drow, int dcol) {
 		if (drow < -1 || drow > 1) return EMPTY;
 		if (dcol < -1 || dcol > 1) return EMPTY;
+		// TODO accept 0 0?
+		// TODO make isValidDirection(drow, dcol) method
 		char player = get(row, col);
 		char nextPiece = get(row + drow, col + dcol);
 		if (player == EMPTY || nextPiece == EMPTY) return EMPTY;
@@ -226,20 +228,26 @@ public class OthelloBoard {
 		boolean hasFlipped = false;
 		for (int drow = -1; drow <= 1; drow++) {
 			for (int dcol = -1; dcol <= 1; dcol++) {
-				if (flip(row, col, drow, dcol, player) > -1) {
+				if (flip(row, col, drow, dcol, player) > 0) {
 					// TODO check if multiple flips in different direction can happen
 					// TODO need to check if any other pieces has a new move
-					board[row][col] = player;
+
 					hasFlipped = true;
+
+					/*
 					boolean hasUpdated;
 					do {
 						hasUpdated = updateSurrounded();
 					} while (hasUpdated);
+					// TODO constantly flip flops
+					 */
 				}
 			}
 		}
+		if (hasFlipped) board[row][col] = player;  // TODO stupid
 		return hasFlipped;
 	}
+
 
 	/**
 	 * Update pieces that are surrounded
@@ -247,20 +255,20 @@ public class OthelloBoard {
 	 * from its place on the board is another player
 	 *
 	 * @return true if any piece was updated
-	 */
+	 *//*
 	private boolean updateSurrounded() {
 		//char hasMove = hasMove();
 		//if (hasMove == EMPTY) return false;
 		for (int row = 0; row < getDimension(); row++) {
 			for (int col = 0; col < getDimension(); col++) {
-				if (isSurrounded(row, col)) {
+				if (updateSurrounded(row, col)) {
 					// TODO update piece if surrounded
 					return true;
 				}
 			}
 		}
 		return false;
-	}
+	}*/
 
 	/**
 	 * Update if player is surrounded at row, col.
@@ -270,27 +278,42 @@ public class OthelloBoard {
 	 * @param row    starting row, in {0,...,dim-1} (typically {0,...,7})
 	 * @param col    starting col, in {0,...,dim-1} (typically {0,...,7})
 	 * @return true if player was updated because surrounded by other player
-	 */
-	private boolean isSurrounded(int row, int col) {
+	 *//*
+	private boolean updateSurrounded(int row, int col) {
 		char player = get(row, col);
 		if (player != P1 && player != P2) return false;
 		for (int drow = -1; drow <= 1; drow++) {
 			for (int dcol = -1; dcol <= 1; dcol++) {
-				if (alternation(row, col, drow, dcol) == player) {
+				char otherPlayer = otherPlayer(player);
+				if (alternation(row, col, drow, dcol) == otherPlayer) {
+					// TODO alternation might be wrong output?
+					// TODO fix flipflop of X to O updates
 					char piece;
-					char otherPlayer = otherPlayer(player);
+					int newRow = row;
+					int newCol = col;
 					do {
 						// TODO first is always true cause its repeat of otherPlayer
-						row -= drow;
-						col -= dcol;
-						piece = get(row, col);
+						newRow += drow;
+						newCol += dcol;
+						piece = get(newRow, newCol);
 					} while (piece == otherPlayer);
-					if (player == piece) return true;
+					newRow = row;
+					newCol = col;
+					if (player == piece) {
+						do {
+							// TODO first is always true cause its repeat of otherPlayer
+							newRow += drow;
+							newCol += dcol;
+							piece = get(newRow, newCol);
+							board[newRow][newCol] = player;
+						} while (piece == otherPlayer);
+						return true;
+					}
 				}
 			}
 		}
 		return false;
-	}
+	}*/
 
 	/**
 	 * 
