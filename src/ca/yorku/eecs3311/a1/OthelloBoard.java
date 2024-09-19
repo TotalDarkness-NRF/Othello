@@ -158,15 +158,22 @@ public class OthelloBoard {
 	}
 
 	/**
-	 * Return which player has a move (row,col) in direction (drow,dcol).
+	 * Return which player has a move (row,col) in directions drow {-1, 0, 1}
+	 * to direction dcol {-1, 0, 1}.
 	 *
 	 * @param row  starting row, in {0,...,dim-1} (typically {0,...,7})
 	 * @param col  starting col, in {0,...,dim-1} (typically {0,...,7})
 	 * @return P1,P2,EMPTY
 	 */
 	private char hasMove(int row, int col) {
-		// TODO need to check piece around if has a move
-		// TODO use hasMove(row, col, drow, dcol)
+		char piece = get(row, col);
+		if (piece != EMPTY) return EMPTY;
+		for (int drow = -1; drow <= 1; drow++) {
+			for (int dcol = -1; dcol <= 1; dcol++) {
+				piece = hasMove(row, col, drow, dcol);
+				if (piece != EMPTY) return piece;
+			}
+		}
 		return EMPTY;
 	}
 
@@ -178,8 +185,8 @@ public class OthelloBoard {
 	public char hasMove() {
 		boolean hasMoveP1 = false;
 		boolean hasMoveP2 = false;
-		for (int row = -1; row <= 1; row++) {
-			for (int col = -1; col <= 1; col++) {
+		for (int row = 0; row < getDimension(); row++) {
+			for (int col = 0; col < getDimension(); col++) {
 				char piece = get(row, col);
 				if (piece != EMPTY) continue;
 				char player = hasMove(row, col);
