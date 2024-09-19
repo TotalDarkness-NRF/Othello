@@ -117,6 +117,16 @@ public class OthelloBoard {
 	 *         board is reached before seeing a player token.
 	 */
 	private int flip(int row, int col, int drow, int dcol, char player) {
+		if (player != P1 && player != P2) return -1;
+		// TODO helper method for this check?
+		if (drow < 0 || drow > 1) return EMPTY;
+		if (dcol < 0 || dcol > 1) return EMPTY;
+		// TODO will board[row][col] be empty or player?
+		// To make a move spot must be empty followed by oppositePlayers pieces
+		// ending in players piece.
+		if (alternation(row, col, drow, dcol) == otherPlayer(player)) {
+			// TODO use hasMove?
+		}
 		return -1;
 	}
 
@@ -130,6 +140,20 @@ public class OthelloBoard {
 	 * @return P1,P2,EMPTY
 	 */
 	private char hasMove(int row, int col, int drow, int dcol) {
+		char piece = get(row, col);
+		if (piece != EMPTY) return EMPTY;
+		char otherPlayer = get(row + drow, col + dcol);
+		if (otherPlayer == P1 || otherPlayer == P2) {
+			char player = otherPlayer(otherPlayer);
+			// TODO keep going in this direction, see if next piece is player.
+			do {
+				// TODO first is always true cause its repeat of otherPlayer
+				row += drow;
+				col += dcol;
+				piece = get(row, col);
+			} while (piece == otherPlayer);
+			if (player == piece) return player;
+		}
 		return EMPTY;
 	}
 
