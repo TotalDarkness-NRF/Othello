@@ -229,91 +229,15 @@ public class OthelloBoard {
 		for (int drow = -1; drow <= 1; drow++) {
 			for (int dcol = -1; dcol <= 1; dcol++) {
 				if (flip(row, col, drow, dcol, player) > 0) {
-					// TODO check if multiple flips in different direction can happen
-					// TODO need to check if any other pieces has a new move
-
 					hasFlipped = true;
-
-					/*
-					boolean hasUpdated;
-					do {
-						hasUpdated = updateSurrounded();
-					} while (hasUpdated);
-					// TODO constantly flip flops
-					 */
 				}
 			}
 		}
-		if (hasFlipped) board[row][col] = player;  // TODO stupid
+		if (hasFlipped) {
+			board[row][col] = player;
+		}
 		return hasFlipped;
 	}
-
-
-	/**
-	 * Update pieces that are surrounded
-	 * A player is surrounded if opposite directions
-	 * from its place on the board is another player
-	 *
-	 * @return true if any piece was updated
-	 *//*
-	private boolean updateSurrounded() {
-		//char hasMove = hasMove();
-		//if (hasMove == EMPTY) return false;
-		for (int row = 0; row < getDimension(); row++) {
-			for (int col = 0; col < getDimension(); col++) {
-				if (updateSurrounded(row, col)) {
-					// TODO update piece if surrounded
-					return true;
-				}
-			}
-		}
-		return false;
-	}*/
-
-	/**
-	 * Update if player is surrounded at row, col.
-	 * A player is surrounded if opposite directions
-	 * from row, col is another player
-	 *
-	 * @param row    starting row, in {0,...,dim-1} (typically {0,...,7})
-	 * @param col    starting col, in {0,...,dim-1} (typically {0,...,7})
-	 * @return true if player was updated because surrounded by other player
-	 *//*
-	private boolean updateSurrounded(int row, int col) {
-		char player = get(row, col);
-		if (player != P1 && player != P2) return false;
-		for (int drow = -1; drow <= 1; drow++) {
-			for (int dcol = -1; dcol <= 1; dcol++) {
-				char otherPlayer = otherPlayer(player);
-				if (alternation(row, col, drow, dcol) == otherPlayer) {
-					// TODO alternation might be wrong output?
-					// TODO fix flipflop of X to O updates
-					char piece;
-					int newRow = row;
-					int newCol = col;
-					do {
-						// TODO first is always true cause its repeat of otherPlayer
-						newRow += drow;
-						newCol += dcol;
-						piece = get(newRow, newCol);
-					} while (piece == otherPlayer);
-					newRow = row;
-					newCol = col;
-					if (player == piece) {
-						do {
-							// TODO first is always true cause its repeat of otherPlayer
-							newRow += drow;
-							newCol += dcol;
-							piece = get(newRow, newCol);
-							board[newRow][newCol] = player;
-						} while (piece == otherPlayer);
-						return true;
-					}
-				}
-			}
-		}
-		return false;
-	}*/
 
 	/**
 	 * 
