@@ -92,8 +92,8 @@ public class OthelloBoard {
 	 *         alternation
 	 */
 	private char alternation(int row, int col, int drow, int dcol) {
-		if (drow < 0 || drow > 1) return EMPTY;
-		if (dcol < 0 || dcol > 1) return EMPTY;
+		if (drow < -1 || drow > 1) return EMPTY;
+		if (dcol < -1 || dcol > 1) return EMPTY;
 		char player = get(row, col);
 		char nextPiece = get(row + drow, col + dcol);
 		if (player == EMPTY || nextPiece == EMPTY) return EMPTY;
@@ -194,6 +194,8 @@ public class OthelloBoard {
 		for (int row = 0; row < getDimension(); row++) {
 			for (int col = 0; col < getDimension(); col++) {
 				char piece = get(row, col);
+				// TODO need to check for case Empty (new move)
+				// TODO need to check for case of not Empty (check if surrounded)
 				if (piece != EMPTY) continue;
 				char player = hasMove(row, col);
 				if (!hasMoveP1 && player == P1) {
@@ -224,14 +226,70 @@ public class OthelloBoard {
 		boolean hasFlipped = false;
 		for (int drow = -1; drow <= 1; drow++) {
 			for (int dcol = -1; dcol <= 1; dcol++) {
-				if (flip(row, col, drow, dcol, player) > 0) {
+				if (flip(row, col, drow, dcol, player) > -1) {
 					// TODO check if multiple flips in different direction can happen
+					// TODO need to check if any other pieces has a new move
 					board[row][col] = player;
 					hasFlipped = true;
+					boolean hasUpdated;
+					do {
+						hasUpdated = updateSurrounded();
+					} while (hasUpdated);
 				}
 			}
 		}
 		return hasFlipped;
+	}
+
+	/**
+	 * Update pieces that are surrounded
+	 * A player is surrounded if opposite directions
+	 * from its place on the board is another player
+	 *
+	 * @return true if any piece was updated
+	 */
+	private boolean updateSurrounded() {
+		//char hasMove = hasMove();
+		//if (hasMove == EMPTY) return false;
+		for (int row = 0; row < getDimension(); row++) {
+			for (int col = 0; col < getDimension(); col++) {
+				if (isSurrounded(row, col)) {
+					// TODO update piece if surrounded
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Update if player is surrounded at row, col.
+	 * A player is surrounded if opposite directions
+	 * from row, col is another player
+	 *
+	 * @param row    starting row, in {0,...,dim-1} (typically {0,...,7})
+	 * @param col    starting col, in {0,...,dim-1} (typically {0,...,7})
+	 * @return true if player was updated because surrounded by other player
+	 */
+	private boolean isSurrounded(int row, int col) {
+		char player = get(row, col);
+		if (player != P1 && player != P2) return false;
+		for (int drow = -1; drow <= 1; drow++) {
+			for (int dcol = -1; dcol <= 1; dcol++) {
+				if (alternation(row, col, drow, dcol) == player) {
+					char piece;
+					char otherPlayer = otherPlayer(player);
+					do {
+						// TODO first is always true cause its repeat of otherPlayer
+						row -= drow;
+						col -= dcol;
+						piece = get(row, col);
+					} while (piece == otherPlayer);
+					if (player == piece) return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -240,7 +298,13 @@ public class OthelloBoard {
 	 * @return the number of tokens on the board for player
 	 */
 	public int getCount(char player) {
+		if (player != P1 && player != P2) return 0;
 		int count = 0;
+		for (int row = 0; row < getDimension(); row++) {
+			for (int col = 0; col < getDimension(); col++) {
+				if (player == get(row, col)) count++;
+			}
+		}
 		return count;
 	}
 
