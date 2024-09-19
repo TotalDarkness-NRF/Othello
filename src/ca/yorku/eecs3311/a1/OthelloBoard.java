@@ -121,13 +121,19 @@ public class OthelloBoard {
 		// TODO helper method for this check?
 		if (drow < 0 || drow > 1) return EMPTY;
 		if (dcol < 0 || dcol > 1) return EMPTY;
-		// TODO will board[row][col] be empty or player?
-		// To make a move spot must be empty followed by oppositePlayers pieces
-		// ending in players piece.
-		if (alternation(row, col, drow, dcol) == otherPlayer(player)) {
-			// TODO use hasMove?
+		int count = 0;
+		if (player== hasMove(row, col, drow, dcol)) {
+			char piece;
+			char otherPlayer = otherPlayer(player);
+			do {
+				row += drow;
+				col += dcol;
+				count++;
+				piece = get(row, col);
+				board[row][col] = player;
+			} while (piece == otherPlayer);
 		}
-		return -1;
+		return count - 1;
 	}
 
 	/**
