@@ -42,6 +42,8 @@ public class OthelloBoard {
 	 * @return P2 or P1, the opposite of player
 	 */
 	public static char otherPlayer(char player) {
+		if (player == P1) return P2;
+		if (player == P2) return P1;
 		return EMPTY;
 	}
 
@@ -52,6 +54,11 @@ public class OthelloBoard {
 	 * @return P1,P2 or EMPTY, EMPTY is returned for an invalid (row,col)
 	 */
 	public char get(int row, int col) {
+		if (!validCoordinate(row, col)) return EMPTY;
+		char piece = board[row][col];
+		if (piece == P1 || piece == P2) {
+			return piece;
+		}
 		return EMPTY;
 	}
 
@@ -63,7 +70,7 @@ public class OthelloBoard {
 	 *         a position on the board.
 	 */
 	private boolean validCoordinate(int row, int col) {
-		return true;
+		return row >= 0 && row < getDimension() && col >= 0 && col < getDimension();
 	}
 
 	/**
@@ -75,7 +82,7 @@ public class OthelloBoard {
 	 * alternation(row,col,drow,dcol)==P1, then placing P1 right before (row,col),
 	 * assuming that square is EMPTY, is a valid move, resulting in a collection of
 	 * P2 being flipped.
-	 * 
+	 *
 	 * @param row  starting row, in {0,...,dim-1} (typically {0,...,7})
 	 * @param col  starting col, in {0,...,dim-1} (typically {0,...,7})
 	 * @param drow the row direction, in {-1,0,1}
@@ -85,6 +92,21 @@ public class OthelloBoard {
 	 *         alternation
 	 */
 	private char alternation(int row, int col, int drow, int dcol) {
+		if (drow < -1 || drow > 1) return EMPTY;
+		if (dcol < -1 || dcol > 1) return EMPTY;
+		if (drow == 0 && dcol == 0) return EMPTY;
+		// TODO make isValidDirection(drow, dcol) method
+		char firstPiece;
+		char secondPiece;
+		do {
+			firstPiece = get(row, col);
+			row += drow;
+			col += dcol;
+			secondPiece = get(row, col);
+			if (otherPlayer(firstPiece) == secondPiece) {
+				return secondPiece;
+			}
+		} while (validCoordinate(row, col));
 		return EMPTY;
 	}
 
@@ -104,7 +126,23 @@ public class OthelloBoard {
 	 *         board is reached before seeing a player token.
 	 */
 	private int flip(int row, int col, int drow, int dcol, char player) {
-		return -1;
+		if (player != P1 && player != P2) return -1;
+		// TODO helper method for this check?
+		if (drow < -1 || drow > 1) return EMPTY;
+		if (dcol < -1 || dcol > 1) return EMPTY;
+		int count = 0;
+		if (player == hasMove(row, col, drow, dcol)) {
+			char piece;
+			char otherPlayer = otherPlayer(player);
+			do {
+				row += drow;
+				col += dcol;
+				count++;
+				piece = get(row, col);
+				board[row][col] = player;
+			} while (piece == otherPlayer);
+		}
+		return count - 1;
 	}
 
 	/**
@@ -117,6 +155,40 @@ public class OthelloBoard {
 	 * @return P1,P2,EMPTY
 	 */
 	private char hasMove(int row, int col, int drow, int dcol) {
+		char piece = get(row, col);
+		if (piece != EMPTY) return EMPTY;
+		char otherPlayer = get(row + drow, col + dcol);
+		if (otherPlayer == P1 || otherPlayer == P2) {
+			char player = otherPlayer(otherPlayer);
+			// TODO keep going in this direction, see if next piece is player.
+			do {
+				// TODO first is always true cause its repeat of otherPlayer
+				row += drow;
+				col += dcol;
+				piece = get(row, col);
+			} while (piece == otherPlayer);
+			if (player == piece) return player;
+		}
+		return EMPTY;
+	}
+
+	/**
+	 * Return which player has a move (row,col) in directions drow {-1, 0, 1}
+	 * to direction dcol {-1, 0, 1}.
+	 *
+	 * @param row  starting row, in {0,...,dim-1} (typically {0,...,7})
+	 * @param col  starting col, in {0,...,dim-1} (typically {0,...,7})
+	 * @return P1,P2,EMPTY
+	 */
+	private char hasMove(int row, int col) {
+		char piece = get(row, col);
+		if (piece != EMPTY) return EMPTY;
+		for (int drow = -1; drow <= 1; drow++) {
+			for (int dcol = -1; dcol <= 1; dcol++) {
+				piece = hasMove(row, col, drow, dcol);
+				if (piece != EMPTY) return piece;
+			}
+		}
 		return EMPTY;
 	}
 
@@ -126,6 +198,25 @@ public class OthelloBoard {
 	 *         neither do.
 	 */
 	public char hasMove() {
+		boolean hasMoveP1 = false;
+		boolean hasMoveP2 = false;
+		for (int row = 0; row < getDimension(); row++) {
+			for (int col = 0; col < getDimension(); col++) {
+				char piece = get(row, col);
+				// TODO need to check for case Empty (new move)
+				// TODO need to check for case of not Empty (check if surrounded)
+				if (piece != EMPTY) continue;
+				char player = hasMove(row, col);
+				if (!hasMoveP1 && player == P1) {
+					hasMoveP1 = true;
+				} else if (!hasMoveP2 && player == P2) {
+					hasMoveP2 = true;
+				}
+				if (hasMoveP1 && hasMoveP2) return BOTH;
+			}
+		}
+		if (hasMoveP1) return P1;
+		if (hasMoveP2) return P2;
 		return EMPTY;
 	}
 
@@ -140,10 +231,19 @@ public class OthelloBoard {
 	 * @return true if player moved successfully at (row,col), false otherwise
 	 */
 	public boolean move(int row, int col, char player) {
-		// HINT: Use some of the above helper methods to get this methods
-		// job done!!
-
-		return true;
+		if (player != P1 && player != P2) return false;
+		boolean hasFlipped = false;
+		for (int drow = -1; drow <= 1; drow++) {
+			for (int dcol = -1; dcol <= 1; dcol++) {
+				if (flip(row, col, drow, dcol, player) > 0) {
+					hasFlipped = true;
+				}
+			}
+		}
+		if (hasFlipped) {
+			board[row][col] = player;
+		}
+		return hasFlipped;
 	}
 
 	/**
@@ -152,7 +252,13 @@ public class OthelloBoard {
 	 * @return the number of tokens on the board for player
 	 */
 	public int getCount(char player) {
+		if (player != P1 && player != P2) return 0;
 		int count = 0;
+		for (int row = 0; row < getDimension(); row++) {
+			for (int col = 0; col < getDimension(); col++) {
+				if (player == get(row, col)) count++;
+			}
+		}
 		return count;
 	}
 
