@@ -69,7 +69,7 @@ public class OthelloBoard {
 	 * @return whether (row,col) is a position on the board. Example: (6,12) is not
 	 *         a position on the board.
 	 */
-	private boolean validCoordinate(int row, int col) {
+	public boolean validCoordinate(int row, int col) {
 		return row >= 0 && row < getDimension() && col >= 0 && col < getDimension();
 	}
 
@@ -180,7 +180,7 @@ public class OthelloBoard {
 	 * @param col  starting col, in {0,...,dim-1} (typically {0,...,7})
 	 * @return P1,P2,EMPTY
 	 */
-	private char hasMove(int row, int col) {
+	public char hasMove(int row, int col) {
 		char piece = get(row, col);
 		if (piece != EMPTY) return EMPTY;
 		for (int drow = -1; drow <= 1; drow++) {
