@@ -94,12 +94,19 @@ public class OthelloBoard {
 	private char alternation(int row, int col, int drow, int dcol) {
 		if (drow < -1 || drow > 1) return EMPTY;
 		if (dcol < -1 || dcol > 1) return EMPTY;
-		// TODO accept 0 0?
+		if (drow == 0 && dcol == 0) return EMPTY;
 		// TODO make isValidDirection(drow, dcol) method
-		char player = get(row, col);
-		char nextPiece = get(row + drow, col + dcol);
-		if (player == EMPTY || nextPiece == EMPTY) return EMPTY;
-		if (otherPlayer(player) == nextPiece) return nextPiece;
+		char firstPiece;
+		char secondPiece;
+		do {
+			firstPiece = get(row, col);
+			row += drow;
+			col += dcol;
+			secondPiece = get(row, col);
+			if (otherPlayer(firstPiece) == secondPiece) {
+				return secondPiece;
+			}
+		} while (validCoordinate(row, col));
 		return EMPTY;
 	}
 
