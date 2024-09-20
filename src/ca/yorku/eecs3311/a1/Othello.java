@@ -21,6 +21,10 @@ public class Othello {
 	private int numMoves = 0;
 	private final OthelloBoard board = new OthelloBoard(DIMENSION);
 
+	protected OthelloBoard getBoard() {
+		return board;
+	}
+
 	/**
 	 * return P1,P2 or EMPTY depending on who moves next.
 	 * 
