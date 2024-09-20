@@ -1,0 +1,8 @@
+bin
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+*.eml
+*.userlibraries
