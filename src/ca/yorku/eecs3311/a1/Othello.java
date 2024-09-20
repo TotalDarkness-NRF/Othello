@@ -27,7 +27,6 @@ public class Othello {
 	 * @return P1, P2 or EMPTY
 	 */
 	public char getWhosTurn() {
-		if (isGameOver()) return OthelloBoard.EMPTY;
 		return whosTurn;
 	}
 
@@ -43,7 +42,10 @@ public class Othello {
 	public boolean move(int row, int col) {
 		if (board.move(row, col, getWhosTurn())) {
 			numMoves++;
-			whosTurn = OthelloBoard.otherPlayer(getWhosTurn());
+			char hasMove = board.hasMove();
+			if (hasMove == OthelloBoard.BOTH) {
+				whosTurn = OthelloBoard.otherPlayer(getWhosTurn());
+			} else whosTurn = hasMove;
 			return true;
 		} else {
 			// TODO change turns?
