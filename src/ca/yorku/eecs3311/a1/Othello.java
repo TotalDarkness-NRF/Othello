@@ -27,6 +27,7 @@ public class Othello {
 	 * @return P1, P2 or EMPTY
 	 */
 	public char getWhosTurn() {
+		if (isGameOver()) return OthelloBoard.EMPTY;
 		return whosTurn;
 	}
 
@@ -91,7 +92,7 @@ public class Othello {
 	 * @return a string representation of the board.
 	 */
 	public String getBoardString() {
-		return board.toString();
+		return board +"\n";
 	}
 
 	/**
