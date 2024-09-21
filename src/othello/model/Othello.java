@@ -19,6 +19,11 @@ public class Othello {
 	public static final int DIMENSION = 8; // This is an 8x8 game
 	private char whosTurn = OthelloBoard.P1; // P1 moves first!
 	private int numMoves = 0;
+	private final OthelloBoard board = new OthelloBoard(DIMENSION);
+
+	protected OthelloBoard getBoard() {
+		return board;
+	}
 
 	/**
 	 * return P1,P2 or EMPTY depending on who moves next.
@@ -26,7 +31,7 @@ public class Othello {
 	 * @return P1, P2 or EMPTY
 	 */
 	public char getWhosTurn() {
-		return ' ';
+		return whosTurn;
 	}
 
 	/**
@@ -34,12 +39,36 @@ public class Othello {
 	 * position row, col. A side effect of this method is modification of whos turn
 	 * and the move count.
 	 * 
-	 * @param row
-	 * @param col
+	 * @param row starting row, in {0,...,dim-1} (typically {0,...,7})
+	 * @param col starting col, in {0,...,dim-1} (typically {0,...,7})
 	 * @return whether the move was successfully made.
 	 */
 	public boolean move(int row, int col) {
-		return true;
+		if (board.move(row, col, getWhosTurn())) {
+			// TODO issue caused when trying to make move when player has no moves
+			// TODO skipping turn when not needed
+			// TODO removing all checks for changing turns causes game1 to fail (dramatically)
+			// TODO adding all checks causes game2 to fail (wrong output, bad skip turn)
+			numMoves++;
+			//whosTurn = OthelloBoar d.otherPlayer(getWhosTurn());
+
+			char hasMove = board.hasMove();
+			if (hasMove == OthelloBoard.BOTH) {
+				whosTurn = OthelloBoard.otherPlayer(getWhosTurn());
+			} else whosTurn = hasMove;
+
+			return true;
+		} else {
+			whosTurn = OthelloBoard.otherPlayer(getWhosTurn());
+			/*
+			char hasMove = board.hasMove();
+			if (hasMove == OthelloBoard.BOTH) {
+				whosTurn = OthelloBoard.otherPlayer(getWhosTurn());
+			} else whosTurn = hasMove;
+			*
+			 */
+			return false;
+		}
 	}
 
 	/**
@@ -48,7 +77,7 @@ public class Othello {
 	 * @return the number of tokens for player on the board
 	 */
 	public int getCount(char player) {
-		return 0;
+		return board.getCount(player);
 	}
 
 	/**
@@ -57,7 +86,16 @@ public class Othello {
 	 * @return P1, P2 or EMPTY for no winner, or the game is not finished.
 	 */
 	public char getWinner() {
-		return OthelloBoard.EMPTY;
+		if (!isGameOver()) return OthelloBoard.EMPTY;
+		int p1Pieces = getCount(OthelloBoard.P1);
+		int p2Pieces = getCount(OthelloBoard.P2);
+		if (p1Pieces == p2Pieces) {
+			return OthelloBoard.EMPTY; // Tie
+		} else if (p1Pieces > p2Pieces) {
+			return OthelloBoard.P1; //P1 Wins
+		} else {
+			return OthelloBoard.P2; // P2 Wins
+		}
 	}
 
 	/**
@@ -65,15 +103,15 @@ public class Othello {
 	 * @return whether the game is over (no player can move next)
 	 */
 	public boolean isGameOver() {
-		return true;
-	}
+		return board.hasMove() == OthelloBoard.EMPTY;
+    }
 
 	/**
 	 * 
 	 * @return a string representation of the board.
 	 */
 	public String getBoardString() {
-		return "";
+		return board +"\n";
 	}
 
 	/**

@@ -69,7 +69,7 @@ public class OthelloBoard {
 	 * @return whether (row,col) is a position on the board. Example: (6,12) is not
 	 *         a position on the board.
 	 */
-	private boolean validCoordinate(int row, int col) {
+	public boolean validCoordinate(int row, int col) {
 		return row >= 0 && row < getDimension() && col >= 0 && col < getDimension();
 	}
 
@@ -160,7 +160,6 @@ public class OthelloBoard {
 		char otherPlayer = get(row + drow, col + dcol);
 		if (otherPlayer == P1 || otherPlayer == P2) {
 			char player = otherPlayer(otherPlayer);
-			// TODO keep going in this direction, see if next piece is player.
 			do {
 				// TODO first is always true cause its repeat of otherPlayer
 				row += drow;
@@ -178,17 +177,29 @@ public class OthelloBoard {
 	 *
 	 * @param row  starting row, in {0,...,dim-1} (typically {0,...,7})
 	 * @param col  starting col, in {0,...,dim-1} (typically {0,...,7})
-	 * @return P1,P2,EMPTY
+	 * @return whether P1,P2 or BOTH have a move somewhere on the board, EMPTY if
+	 *         neither do.
 	 */
-	private char hasMove(int row, int col) {
+	public char hasMove(int row, int col) {
+		boolean hasMoveP1 = false;
+		boolean hasMoveP2 = false;
 		char piece = get(row, col);
 		if (piece != EMPTY) return EMPTY;
 		for (int drow = -1; drow <= 1; drow++) {
 			for (int dcol = -1; dcol <= 1; dcol++) {
 				piece = hasMove(row, col, drow, dcol);
-				if (piece != EMPTY) return piece;
+				if (!hasMoveP1 && piece == P1) {
+					hasMoveP1 = true;
+				}
+				if (!hasMoveP2 && piece == P2) {
+					hasMoveP2 = true;
+				}
+				if (hasMoveP1 && hasMoveP2) return BOTH;
+				//if (piece != EMPTY) return piece;
 			}
 		}
+		if (hasMoveP1) return P1;
+		if (hasMoveP2) return P2;
 		return EMPTY;
 	}
 
@@ -207,9 +218,11 @@ public class OthelloBoard {
 				// TODO need to check for case of not Empty (check if surrounded)
 				if (piece != EMPTY) continue;
 				char player = hasMove(row, col);
+				if (player == BOTH) return BOTH;
 				if (!hasMoveP1 && player == P1) {
 					hasMoveP1 = true;
-				} else if (!hasMoveP2 && player == P2) {
+				}
+				if (!hasMoveP2 && player == P2) {
 					hasMoveP2 = true;
 				}
 				if (hasMoveP1 && hasMoveP2) return BOTH;
