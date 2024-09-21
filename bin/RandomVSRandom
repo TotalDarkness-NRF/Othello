@@ -29,14 +29,17 @@ Alternative Hypothesis: claims that there’s an effect in the population.
 
 Observe RandomVsRandom.java. It contains methods that perform bootstrap resampling over
 simulated random vs random games. By default it simulates 50 games, taking the average
-amount of wins for the observed player. Using bootstrap resampling, we draw random samples from
-the simulated games creating a resample. Using this resample we can again calculate the average
-of wins for the observed player. Repeating this for several thousand times (default 10000), we
-can calculate a new average using more data, with less simulated games.
+amount of wins for the observed player, doing this 50 times. Using bootstrap resampling,
+we draw random samples from the simulated games creating a resample. Using this resample we can
+again calculate the average of wins for the observed player. Repeating this for several
+thousand times (default 100000), we can calculate a new average using more data, with less simulated games.
 
 When observing P1 the mean is about equal to 0.45 +- 0.015
 When observing P2 the mean is about equal to 0.50 +- 0.015
 When observing no winners (tie) the mean is about equal to 0.05 +- 0.015
+
+Observing how little the data changes between thousands of samples of games, it is clear
+that it supports H0 and not Ha.
 
 References: 
 https://www.thoughtco.com/null-hypothesis-vs-alternative-hypothesis-3126413
