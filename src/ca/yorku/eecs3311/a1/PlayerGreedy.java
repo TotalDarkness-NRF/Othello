@@ -46,7 +46,8 @@ public class PlayerGreedy {
 		Move move = null;
 		for (int row = 0; row < othello.getBoard().getDimension(); row++) {
 			for (int col = 0; col < othello.getBoard().getDimension(); col++) {
-				if (othello.getBoard().hasMove(row, col) == player) {
+				hasMove = othello.getBoard().hasMove(row, col);
+				if (hasMove == player || hasMove == OthelloBoard.BOTH) {
 					count = getMoveCounts(row, col);
 					if (count >= maxPieces) {
 						if (move != null && count == maxPieces) {
@@ -54,8 +55,7 @@ public class PlayerGreedy {
 							else if (row == move.getRow()) {
 								if (col > move.getCol()) continue;
 							}
-							// TODO get move with smallest row
-							// TODO get move with smallest col if rows equal
+							// TODO code is so ugly need to refactor later
 						}
 						maxPieces = count;
 						move = new Move(row, col);
@@ -63,7 +63,6 @@ public class PlayerGreedy {
 				}
 			}
 		}
-
 		return maxPieces == 0 ? null : move;
 	}
 
@@ -79,6 +78,8 @@ public class PlayerGreedy {
 			piece = othello.getBoard().get(row, col);
 			if (piece == player) {
 				return count;
+			} else if (piece == OthelloBoard.EMPTY) {
+				return 0;
 			}
 			count++;
 		} while (othello.getBoard().validCoordinate(row + drow, col + dcol));
