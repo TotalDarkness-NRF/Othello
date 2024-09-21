@@ -95,7 +95,6 @@ public class OthelloBoard {
 		if (drow < -1 || drow > 1) return EMPTY;
 		if (dcol < -1 || dcol > 1) return EMPTY;
 		if (drow == 0 && dcol == 0) return EMPTY;
-		//if (get(row, col) != EMPTY) return EMPTY;
 		// TODO make isValidDirection(drow, dcol) method
 		char firstPiece;
 		char secondPiece;
@@ -158,7 +157,6 @@ public class OthelloBoard {
 	private char hasMove(int row, int col, int drow, int dcol) {
 		char piece = get(row, col);
 		if (piece != EMPTY) return EMPTY;
-
 		char otherPlayer = get(row + drow, col + dcol);
 		if (otherPlayer == P1 || otherPlayer == P2) {
 			char player = otherPlayer(otherPlayer);
@@ -171,8 +169,6 @@ public class OthelloBoard {
 			if (player == piece) return player;
 		}
 		return EMPTY;
-
-		//return alternation(row, col, drow, dcol);
 	}
 
 	/**
