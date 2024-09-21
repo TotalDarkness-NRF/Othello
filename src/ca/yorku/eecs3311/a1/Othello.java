@@ -45,15 +45,28 @@ public class Othello {
 	 */
 	public boolean move(int row, int col) {
 		if (board.move(row, col, getWhosTurn())) {
+			// TODO issue caused when trying to make move when player has no moves
+			// TODO skipping turn when not needed
+			// TODO removing all checks for changing turns causes game1 to fail (dramatically)
+			// TODO adding all checks causes game2 to fail (wrong output, bad skip turn)
 			numMoves++;
+			//whosTurn = OthelloBoar d.otherPlayer(getWhosTurn());
+
 			char hasMove = board.hasMove();
 			if (hasMove == OthelloBoard.BOTH) {
 				whosTurn = OthelloBoard.otherPlayer(getWhosTurn());
 			} else whosTurn = hasMove;
+
 			return true;
 		} else {
-			// TODO change turns?
-			// TODO update moves?
+			whosTurn = OthelloBoard.otherPlayer(getWhosTurn());
+			/*
+			char hasMove = board.hasMove();
+			if (hasMove == OthelloBoard.BOTH) {
+				whosTurn = OthelloBoard.otherPlayer(getWhosTurn());
+			} else whosTurn = hasMove;
+			*
+			 */
 			return false;
 		}
 	}
