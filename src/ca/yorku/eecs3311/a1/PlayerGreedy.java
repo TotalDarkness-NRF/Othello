@@ -22,18 +22,21 @@ package ca.yorku.eecs3311.a1;
  */
 public class PlayerGreedy extends Player {
 
+	/**
+	 * Gets a move by considering all possible moves that the player.
+	 * Picks the moves that will increase the number tokens the most.
+	 * If two moves have the same max, the move with the smallest row is chosen.
+	 * If two moves also have the same row, the move with the smallest col is chosen.
+	 *
+	 * @return the move that will increase the number of tokens the most.
+	 */
 	public Move getMove() {
-		// TODO do we need to check if its my turn?
-		if (this.othello.getWhosTurn() != player) {
-			return null;
-		}
+		if (this.othello.getWhosTurn() != player) return null;
 		char hasMove = othello.getBoard().hasMove();
-		// TODO acceptable to send null?
 		if (hasMove == OthelloBoard.EMPTY || hasMove == OthelloBoard.otherPlayer(player)) {
 			return null;
 		}
-		int maxPieces = 0;
-		int count;
+		int count, maxPieces = 0;
 		Move move = null;
 		for (int row = 0; row < othello.getBoard().getDimension(); row++) {
 			for (int col = 0; col < othello.getBoard().getDimension(); col++) {
@@ -46,7 +49,6 @@ public class PlayerGreedy extends Player {
 							else if (row == move.getRow()) {
 								if (col > move.getCol()) continue;
 							}
-							// TODO code is so ugly need to refactor later
 						}
 						maxPieces = count;
 						move = new Move(row, col);
@@ -57,10 +59,18 @@ public class PlayerGreedy extends Player {
 		return maxPieces == 0 ? null : move;
 	}
 
+	/**
+	 * Gets the count of tokens that will be added to the player
+	 * if the player makes a specified move in row, col and in direction
+	 * drow, dcol.
+	 * @param row starting row, in {0,...,dim-1} (typically {0,...,7})
+	 * @param col starting col, in {0,...,dim-1} (typically {0,...,7})
+	 * @param drow the row direction, in {-1,0,1}
+	 * @param dcol the col direction, in {-1,0,1}
+	 * @return the number of tokens that will be added as a result of this move.
+	 */
 	private int getMoveCounts(int row, int col, int drow, int dcol) {
-		if (drow < -1 || drow > 1) return 0;
-		if (dcol < -1 || dcol > 1) return 0;
-		if (drow == 0 && dcol == 0) return 0;
+		if (!othello.getBoard().validDirection(drow, dcol)) return 0;
 		int count = 0;
 		char piece;
 		do {
@@ -77,6 +87,13 @@ public class PlayerGreedy extends Player {
 		return 0;
 	}
 
+	/**
+	 * Gets the max number of tokens that will be added from this move
+	 * at the specified row and col.
+	 * @param row starting row, in {0,...,dim-1} (typically {0,...,7})
+	 * @param col starting col, in {0,...,dim-1} (typically {0,...,7})
+	 * @return the max number of tokens that will be added as a result of this move.
+	 */
 	private int getMoveCounts(int row, int col) {
 		int count = 0;
 		for (int drow = -1; drow <= 1; drow++) {
