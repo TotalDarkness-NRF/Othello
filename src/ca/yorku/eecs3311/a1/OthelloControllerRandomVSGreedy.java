@@ -4,6 +4,7 @@ package ca.yorku.eecs3311.a1;
  * The goal here is to print out the probability that Random wins and Greedy
  * wins as a result of playing 10000 games against each other with P1=Random and
  * P2=Greedy. What is your conclusion, which is the better strategy?
+ * The greedy strategy is the better strategy compared to the random strategy.
  * @author ilir
  *
  */
