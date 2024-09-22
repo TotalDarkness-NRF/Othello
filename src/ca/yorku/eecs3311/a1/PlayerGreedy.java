@@ -20,8 +20,6 @@ package ca.yorku.eecs3311.a1;
  * @author ilir
  *
  */
-
-// TODO javadoc this
 public class PlayerGreedy extends Player {
 
 	public Move getMove() {

@@ -1,9 +1,21 @@
 package ca.yorku.eecs3311.a1;
 
+/**
+ * A generic OthelloController class that provides basic
+ * functionality to play an Othello game against various
+ * player strategies.
+ */
 public abstract class OthelloController {
     protected final Othello othello;
     protected final Player player1, player2;
 
+    /**
+     * Constructs an OthelloController using the provided Othello
+     * game and the provided players, who may use different strategies.
+     * @param othello the Othello game.
+     * @param player1 the first player (Black or X)
+     * @param player2 the second player (White or O)
+     */
     public OthelloController(Othello othello, Player player1, Player player2) {
         this.othello = othello;
         player1.setOthello(this.othello);
@@ -14,8 +26,15 @@ public abstract class OthelloController {
         this.player2 = player2;
     }
 
+    /**
+     * Play the Othello game
+     */
     public abstract void play();
 
+    /**
+     *
+     * @return the next players move
+     */
     public Move getNextMove() {
         Move move = null;
         char whosTurn = othello.getWhosTurn();

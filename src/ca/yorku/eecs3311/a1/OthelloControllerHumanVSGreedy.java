@@ -19,6 +19,9 @@ public class OthelloControllerHumanVSGreedy extends OthelloController {
 		this.reporter = new OthelloReporter(this.othello);
 	}
 
+	/**
+	 * Plays a Human Vs a computer using a greedy strategy.
+	 */
 	public void play() {
 		while (!othello.isGameOver()) {
 			reporter.report();

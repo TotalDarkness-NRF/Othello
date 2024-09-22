@@ -24,6 +24,9 @@ public class OthelloControllerRandomVSRandom extends OthelloController {
 		super(new Othello(), new PlayerRandom(), new PlayerRandom());
 	}
 
+	/**
+	 * Plays a computer using a random strategy Vs a computer using a random strategy.
+	 */
 	public void play() {
 		while (!othello.isGameOver()) {
 			Move move = getNextMove();

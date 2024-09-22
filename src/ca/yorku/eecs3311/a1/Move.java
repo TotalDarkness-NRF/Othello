@@ -11,23 +11,21 @@ package ca.yorku.eecs3311.a1;
 public class Move {
 	final private int row, col;
 
+	/**
+	 * Constructs a Move position using row and col
+	 * as the initial position.
+	 * @param row the initial row
+	 * @param col the initial col
+	 */
 	public Move(int row, int col) {
 		this.row = row;
 		this.col = col;
 	}
 
-	/**
-	 *
-	 * @return the initial row of the move.
-	 */
 	public int getRow() {
 		return row;
 	}
 
-	/**
-	 *
-	 * @return the initial column of the move.
-	 */
 	public int getCol() {
 		return col;
 	}

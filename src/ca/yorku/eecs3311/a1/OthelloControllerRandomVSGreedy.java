@@ -17,6 +17,9 @@ public class OthelloControllerRandomVSGreedy extends OthelloController {
 		super(new Othello(), new PlayerRandom(), new PlayerGreedy());
 	}
 
+	/**
+	 * Plays a computer using a random strategy Vs a computer using a greedy strategy.
+	 */
 	public void play() {
 		while (!othello.isGameOver()) {
 			Move move = getNextMove();

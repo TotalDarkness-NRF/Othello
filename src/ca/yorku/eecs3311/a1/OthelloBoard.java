@@ -18,6 +18,11 @@ public class OthelloBoard {
 	private final int dim;
 	private final char[][] board;
 
+	/**
+	 * Constructs an OthelloBoard with provided dimension.
+	 * An Othello board is always a square.
+	 * @param dim the dimension of the board.
+	 */
 	public OthelloBoard(int dim) {
 		this.dim = dim;
 		board = new char[this.dim][this.dim];
@@ -33,7 +38,7 @@ public class OthelloBoard {
 
 	/**
 	 *
-	 * @return the dimensions of the board (Board is always a square)
+	 * @return the dimensions of the board (Board is always a square).
 	 */
 	public int getDimension() {
 		return this.dim;

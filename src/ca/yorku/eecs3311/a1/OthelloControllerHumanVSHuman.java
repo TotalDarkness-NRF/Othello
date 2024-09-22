@@ -19,6 +19,9 @@ public class OthelloControllerHumanVSHuman extends OthelloController {
 		this.reporter = new OthelloReporter(this.othello);
 	}
 
+	/**
+	 * Plays a Human Vs Human.
+	 */
 	public void play() {
 		while (!othello.isGameOver()) {
 			reporter.report();

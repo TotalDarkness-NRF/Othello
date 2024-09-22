@@ -19,6 +19,9 @@ public class OthelloControllerHumanVSRandom extends OthelloController {
 		this.reporter = new OthelloReporter(othello);
 	}
 
+	/**
+	 * Plays a Human Vs a computer using a random strategy.
+	 */
 	public void play() {
 		while (!othello.isGameOver()) {
 			reporter.report();
