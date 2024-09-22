@@ -18,9 +18,13 @@ import java.util.Random;
 public class Othello {
 	public static final int DIMENSION = 8; // This is an 8x8 game
 	private char whosTurn = OthelloBoard.P1; // P1 moves first!
-	private int numMoves = 0;
+	private int numMoves = 0; // TODO is this needed?
 	private final OthelloBoard board = new OthelloBoard(DIMENSION);
 
+	/**
+	 *
+	 * @return the Othello board.
+	 */
 	protected OthelloBoard getBoard() {
 		return board;
 	}
@@ -45,13 +49,7 @@ public class Othello {
 	 */
 	public boolean move(int row, int col) {
 		if (board.move(row, col, getWhosTurn())) {
-			// TODO issue caused when trying to make move when player has no moves
-			// TODO skipping turn when not needed
-			// TODO removing all checks for changing turns causes game1 to fail (dramatically)
-			// TODO adding all checks causes game2 to fail (wrong output, bad skip turn)
 			numMoves++;
-			//whosTurn = OthelloBoar d.otherPlayer(getWhosTurn());
-
 			char hasMove = board.hasMove();
 			if (hasMove == OthelloBoard.BOTH) {
 				whosTurn = OthelloBoard.otherPlayer(getWhosTurn());
@@ -59,14 +57,8 @@ public class Othello {
 
 			return true;
 		} else {
+			// TODO switch turns if turn move didnt work?
 			whosTurn = OthelloBoard.otherPlayer(getWhosTurn());
-			/*
-			char hasMove = board.hasMove();
-			if (hasMove == OthelloBoard.BOTH) {
-				whosTurn = OthelloBoard.otherPlayer(getWhosTurn());
-			} else whosTurn = hasMove;
-			*
-			 */
 			return false;
 		}
 	}
@@ -82,6 +74,9 @@ public class Othello {
 
 	/**
 	 * Returns the winner of the game.
+	 * Whichever player has the most pieces on the board
+	 * when the game is over wins. If they have the same amount
+	 * it a tie and no player wins.
 	 * 
 	 * @return P1, P2 or EMPTY for no winner, or the game is not finished.
 	 */
