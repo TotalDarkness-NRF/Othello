@@ -104,4 +104,3 @@ public class PlayerGreedy extends Player {
 		return count;
 	}
 }
-
