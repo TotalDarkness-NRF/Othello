@@ -9,8 +9,12 @@ package ca.yorku.eecs3311.a1;
  */
 public class OthelloControllerRandomVSGreedy extends OthelloController {
 
+	/**
+	 * Constructs a new OthelloController with a new Othello game, ready to play
+	 * with two users at the console.
+	 */
 	public OthelloControllerRandomVSGreedy() {
-		super(new Othello(), new PlayerRandom(OthelloBoard.P1), new PlayerGreedy(OthelloBoard.P2));
+		super(new Othello(), new PlayerRandom(), new PlayerGreedy());
 	}
 
 	public void play() {

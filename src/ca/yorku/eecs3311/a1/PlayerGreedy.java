@@ -24,10 +24,6 @@ package ca.yorku.eecs3311.a1;
 // TODO javadoc this
 public class PlayerGreedy extends Player {
 
-	public PlayerGreedy(char player) {
-		super(player);
-	}
-
 	public Move getMove() {
 		// TODO do we need to check if its my turn?
 		if (this.othello.getWhosTurn() != player) {

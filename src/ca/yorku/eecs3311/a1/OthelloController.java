@@ -7,7 +7,9 @@ public abstract class OthelloController {
     public OthelloController(Othello othello, Player player1, Player player2) {
         this.othello = othello;
         player1.setOthello(this.othello);
+        player1.setPlayer(OthelloBoard.P1);
         player2.setOthello(this.othello);
+        player2.setPlayer(OthelloBoard.P2);
         this.player1 = player1;
         this.player2 = player2;
     }

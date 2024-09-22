@@ -15,7 +15,7 @@ public class OthelloControllerHumanVSHuman extends OthelloController {
 	 * with two users at the console.
 	 */
 	public OthelloControllerHumanVSHuman() {
-		super(new Othello(), new PlayerHuman(OthelloBoard.P1), new PlayerHuman(OthelloBoard.P2));
+		super(new Othello(), new PlayerHuman(), new PlayerHuman());
 		this.reporter = new OthelloReporter(this.othello);
 	}
 

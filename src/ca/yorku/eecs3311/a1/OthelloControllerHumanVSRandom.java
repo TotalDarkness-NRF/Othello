@@ -10,13 +10,16 @@ package ca.yorku.eecs3311.a1;
 public class OthelloControllerHumanVSRandom extends OthelloController {
 	private final OthelloReporter reporter;
 
+	/**
+	 * Constructs a new OthelloController with a new Othello game, ready to play
+	 * with one user at the console and one player using a random strategy.
+	 */
 	public OthelloControllerHumanVSRandom() {
-		super(new Othello(), new PlayerHuman(OthelloBoard.P1), new PlayerRandom(OthelloBoard.P2));
+		super(new Othello(), new PlayerHuman(), new PlayerRandom());
 		this.reporter = new OthelloReporter(othello);
 	}
 
 	public void play() {
-
 		while (!othello.isGameOver()) {
 			reporter.report();
 			Move move = getNextMove();
@@ -28,8 +31,8 @@ public class OthelloControllerHumanVSRandom extends OthelloController {
 	
 	/**
 	 * Run main to play a Human (P1) against the computer P2. 
-	 * The computer uses a greedy strategy, that is, it picks the first
-	 * move which maximizes its number of token on the board.
+	 * The computer uses a random strategy, that is, it picks a random
+	 * move that it can make.
 	 * The output should be almost identical to that of OthelloControllerHumanVSHuman.
 	 * @param args
 	 */

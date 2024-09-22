@@ -10,8 +10,12 @@ package ca.yorku.eecs3311.a1;
 public class OthelloControllerHumanVSGreedy extends OthelloController {
 	private final OthelloReporter reporter;
 
+	/**
+	 * Constructs a new OthelloController with a new Othello game, ready to play
+	 * with one user at the console and one player using a greedy strategy.
+	 */
 	public OthelloControllerHumanVSGreedy() {
-		super(new Othello(), new PlayerHuman(OthelloBoard.P1), new PlayerGreedy(OthelloBoard.P2));
+		super(new Othello(), new PlayerHuman(), new PlayerGreedy());
 		this.reporter = new OthelloReporter(this.othello);
 	}
 

@@ -14,10 +14,6 @@ import java.util.Random;
 public class PlayerRandom extends Player {
 	private final Random rand = new Random();
 
-	public PlayerRandom(char player) {
-		super(player);
-	}
-
 	public Move getMove() {
 		if (othello.getWhosTurn() != player) {
 			return null;

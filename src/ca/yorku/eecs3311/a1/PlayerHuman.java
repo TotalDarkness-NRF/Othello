@@ -14,10 +14,6 @@ public class PlayerHuman extends Player {
 	private static final String INVALID_INPUT_MESSAGE = "Invalid number, please enter 1-8";
 	private static final BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
 
-	public PlayerHuman(char player) {
-		super(player);
-	}
-
 	public Move getMove() {
 		int row = getMove("row: ");
 		int col = getMove("col: ");
