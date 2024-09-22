@@ -15,9 +15,9 @@ package ca.yorku.eecs3311.a1;
  *
  */
 public class OthelloControllerRandomVSRandom {
-	protected Othello othello;
-	PlayerRandom player1;
-	PlayerRandom player2;
+	protected final Othello othello;
+	private final PlayerRandom player1;
+	private final PlayerRandom player2;
 
 	public OthelloControllerRandomVSRandom() {
 		this.othello = new Othello();
@@ -25,7 +25,6 @@ public class OthelloControllerRandomVSRandom {
 		this.player2 = new PlayerRandom(this.othello, OthelloBoard.P2);
 	}
 
-	// TODO is there a way to get output without copying code from HumanVsHuman
 	public void play() {
 		while (!othello.isGameOver()) {
 			Move move = null;

@@ -14,7 +14,6 @@ package ca.yorku.eecs3311.a1;
  *
  */
 public class OthelloBoard {
-	
 	public static final char EMPTY = ' ', P1 = 'X', P2 = 'O', BOTH = 'B';
 	private final int dim;
 	private final char[][] board;
