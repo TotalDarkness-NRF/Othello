@@ -8,22 +8,21 @@ package ca.yorku.eecs3311.a1;
  *
  */
 public class OthelloControllerHumanVSGreedy {
-
-	protected Othello othello;
-	PlayerHuman player1;
-	PlayerGreedy player2;
+	protected final Othello othello;
+	private final OthelloReporter reporter;
+	private final PlayerHuman player1;
+	private final PlayerGreedy player2;
 
 	public OthelloControllerHumanVSGreedy() {
 		this.othello = new Othello();
+		this.reporter = new OthelloReporter(this.othello);
 		this.player1 = new PlayerHuman(this.othello, OthelloBoard.P1);
 		this.player2 = new PlayerGreedy(this.othello, OthelloBoard.P2);
 	}
 
-	// TODO is there a way to get output without copying code from HumanVsHuman
 	public void play() {
-
 		while (!othello.isGameOver()) {
-			this.report();
+			reporter.report();
 
 			Move move = null;
 			char whosTurn = othello.getWhosTurn();
@@ -33,32 +32,10 @@ public class OthelloControllerHumanVSGreedy {
 			if (whosTurn == OthelloBoard.P2)
 				move = player2.getMove();
 
-			this.reportMove(whosTurn, move);
+			reporter.reportMove(whosTurn, move);
 			othello.move(move.getRow(), move.getCol());
 		}
-		this.reportFinal();
-	}
-
-	private void reportMove(char whosTurn, Move move) {
-		System.out.println(whosTurn + " makes move " + move + "\n");
-	}
-
-	private void report() {
-
-		String s = othello.getBoardString() + OthelloBoard.P1 + ":"
-				+ othello.getCount(OthelloBoard.P1) + " "
-				+ OthelloBoard.P2 + ":" + othello.getCount(OthelloBoard.P2) + "  "
-				+ othello.getWhosTurn() + " moves next";
-		System.out.println(s);
-	}
-
-	private void reportFinal() {
-
-		String s = othello.getBoardString() + OthelloBoard.P1 + ":"
-				+ othello.getCount(OthelloBoard.P1) + " "
-				+ OthelloBoard.P2 + ":" + othello.getCount(OthelloBoard.P2)
-				+ "  " + othello.getWinner() + " won\n";
-		System.out.println(s);
+		reporter.reportFinal();
 	}
 	
 	/**
