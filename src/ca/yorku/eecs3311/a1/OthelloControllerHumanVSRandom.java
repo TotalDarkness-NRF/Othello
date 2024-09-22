@@ -7,33 +7,20 @@ package ca.yorku.eecs3311.a1;
  * @author ilir
  *
  */
-public class OthelloControllerHumanVSRandom {
-	protected final Othello othello;
+public class OthelloControllerHumanVSRandom extends OthelloController {
 	private final OthelloReporter reporter;
-	private final PlayerHuman player1;
-	private final PlayerRandom player2;
 
 	public OthelloControllerHumanVSRandom() {
-		this.othello = new Othello();
+		super(new Othello(), new PlayerHuman(OthelloBoard.P1), new PlayerRandom(OthelloBoard.P2));
 		this.reporter = new OthelloReporter(othello);
-		this.player1 = new PlayerHuman(this.othello, OthelloBoard.P1);
-		this.player2 = new PlayerRandom(this.othello, OthelloBoard.P2);
 	}
 
 	public void play() {
 
 		while (!othello.isGameOver()) {
 			reporter.report();
-
-			Move move = null;
-			char whosTurn = othello.getWhosTurn();
-
-			if (whosTurn == OthelloBoard.P1)
-				move = player1.getMove();
-			if (whosTurn == OthelloBoard.P2)
-				move = player2.getMove();
-
-			reporter.reportMove(whosTurn, move);
+			Move move = getNextMove();
+			reporter.reportMove(othello.getWhosTurn(), move);
 			othello.move(move.getRow(), move.getCol());
 		}
 		reporter.reportFinal();
@@ -47,7 +34,7 @@ public class OthelloControllerHumanVSRandom {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		OthelloControllerHumanVSRandom oc = new OthelloControllerHumanVSRandom();
+		OthelloController oc = new OthelloControllerHumanVSRandom();
 		oc.play();
 	}
 }

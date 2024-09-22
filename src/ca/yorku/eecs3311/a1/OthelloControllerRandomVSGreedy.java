@@ -7,25 +7,15 @@ package ca.yorku.eecs3311.a1;
  * @author ilir
  *
  */
-public class OthelloControllerRandomVSGreedy {
-	protected Othello othello;
-	PlayerRandom player1;
-	PlayerGreedy player2;
+public class OthelloControllerRandomVSGreedy extends OthelloController {
 
 	public OthelloControllerRandomVSGreedy() {
-		this.othello = new Othello();
-		this.player1 = new PlayerRandom(this.othello, OthelloBoard.P1);
-		this.player2 = new PlayerGreedy(this.othello, OthelloBoard.P2);
+		super(new Othello(), new PlayerRandom(OthelloBoard.P1), new PlayerGreedy(OthelloBoard.P2));
 	}
 
 	public void play() {
 		while (!othello.isGameOver()) {
-			Move move = null;
-			char whosTurn = othello.getWhosTurn();
-			if (whosTurn == OthelloBoard.P1)
-				move = player1.getMove();
-			if (whosTurn == OthelloBoard.P2)
-				move = player2.getMove();
+			Move move = getNextMove();
 			othello.move(move.getRow(), move.getCol());
 		}
 	}
@@ -40,7 +30,7 @@ public class OthelloControllerRandomVSGreedy {
 	public static void main(String[] args) {
 		int p1wins = 0, p2wins = 0, numGames = 10000;
 		for(int games = 0; games < numGames; games++) {
-			OthelloControllerRandomVSGreedy oc = new OthelloControllerRandomVSGreedy();
+			OthelloController oc = new OthelloControllerRandomVSGreedy();
 			oc.play();
 			char winner = oc.othello.getWinner();
 			if (winner == OthelloBoard.P1) {

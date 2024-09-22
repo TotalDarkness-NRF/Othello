@@ -7,32 +7,19 @@ package ca.yorku.eecs3311.a1;
  * @author ilir
  *
  */
-public class OthelloControllerHumanVSGreedy {
-	protected final Othello othello;
+public class OthelloControllerHumanVSGreedy extends OthelloController {
 	private final OthelloReporter reporter;
-	private final PlayerHuman player1;
-	private final PlayerGreedy player2;
 
 	public OthelloControllerHumanVSGreedy() {
-		this.othello = new Othello();
+		super(new Othello(), new PlayerHuman(OthelloBoard.P1), new PlayerGreedy(OthelloBoard.P2));
 		this.reporter = new OthelloReporter(this.othello);
-		this.player1 = new PlayerHuman(this.othello, OthelloBoard.P1);
-		this.player2 = new PlayerGreedy(this.othello, OthelloBoard.P2);
 	}
 
 	public void play() {
 		while (!othello.isGameOver()) {
 			reporter.report();
-
-			Move move = null;
-			char whosTurn = othello.getWhosTurn();
-
-			if (whosTurn == OthelloBoard.P1)
-				move = player1.getMove();
-			if (whosTurn == OthelloBoard.P2)
-				move = player2.getMove();
-
-			reporter.reportMove(whosTurn, move);
+			Move move = getNextMove();
+			reporter.reportMove(othello.getWhosTurn(), move);
 			othello.move(move.getRow(), move.getCol());
 		}
 		reporter.reportFinal();
