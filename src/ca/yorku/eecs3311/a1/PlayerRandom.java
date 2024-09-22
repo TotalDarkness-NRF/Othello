@@ -11,14 +11,11 @@ import java.util.Random;
  * @author ilir
  *
  */
-public class PlayerRandom {
-	private Othello othello;
-	private char player;
-	private Random rand = new Random();
+public class PlayerRandom extends Player {
+	private final Random rand = new Random();
 
-	public PlayerRandom(Othello othello, char player) {
-		this.othello = othello;
-		this.player = player;
+	public PlayerRandom(char player) {
+		super(player);
 	}
 
 	public Move getMove() {

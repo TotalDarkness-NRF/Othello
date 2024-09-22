@@ -21,19 +21,16 @@ package ca.yorku.eecs3311.a1;
  *
  */
 
-public class PlayerGreedy {
+// TODO javadoc this
+public class PlayerGreedy extends Player {
 
-	private Othello othello;
-	private char player;
-
-	public PlayerGreedy(Othello othello, char player) {
-		this.othello = othello;
-		this.player = player;
+	public PlayerGreedy(char player) {
+		super(player);
 	}
 
 	public Move getMove() {
 		// TODO do we need to check if its my turn?
-		if (othello.getWhosTurn() != player) {
+		if (this.othello.getWhosTurn() != player) {
 			return null;
 		}
 		char hasMove = othello.getBoard().hasMove();
