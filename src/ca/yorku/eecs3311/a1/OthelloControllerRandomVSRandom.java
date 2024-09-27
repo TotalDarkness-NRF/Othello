@@ -53,7 +53,6 @@ public class OthelloControllerRandomVSRandom extends OthelloController {
 			}
 		}
 
-		// TODO must output be as java doc says or as originally given
 		System.out.println("Probability P1 wins=" + (float) p1wins / numGames);
 		System.out.println("Probability P2 wins=" + (float) p2wins / numGames);
 	}

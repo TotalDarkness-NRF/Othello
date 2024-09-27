@@ -55,11 +55,6 @@ public class Othello {
 			return true;
 		}
 		return false;
-		/*else {
-			// TODO switch turns if turn move didnt work?
-			whosTurn = OthelloBoard.otherPlayer(getWhosTurn());
-			return false;
-		}*/
 	}
 
 	/**
