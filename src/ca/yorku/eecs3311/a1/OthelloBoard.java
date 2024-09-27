@@ -14,11 +14,15 @@ package ca.yorku.eecs3311.a1;
  *
  */
 public class OthelloBoard {
-	
 	public static final char EMPTY = ' ', P1 = 'X', P2 = 'O', BOTH = 'B';
-	private int dim = 8;
-	private char[][] board;
+	private final int dim;
+	private final char[][] board;
 
+	/**
+	 * Constructs an OthelloBoard with provided dimension.
+	 * An Othello board is always a square.
+	 * @param dim the dimension of the board.
+	 */
 	public OthelloBoard(int dim) {
 		this.dim = dim;
 		board = new char[this.dim][this.dim];
@@ -32,6 +36,10 @@ public class OthelloBoard {
 		this.board[mid][mid - 1] = this.board[mid - 1][mid] = P2;
 	}
 
+	/**
+	 *
+	 * @return the dimensions of the board (Board is always a square).
+	 */
 	public int getDimension() {
 		return this.dim;
 	}
@@ -74,6 +82,18 @@ public class OthelloBoard {
 	}
 
 	/**
+	 *
+	 * @param drow the row direction, in {-1,0,1}
+	 * @param dcol the col direction, in {-1,0,1}
+	 * @return a direction has a valid drow, and dcol, and is going in some direction
+	 */
+	public boolean validDirection(int drow, int dcol) {
+		if (drow < -1 || drow > 1) return false;
+		if (dcol < -1 || dcol > 1) return false;
+        return !(drow == 0 && dcol == 0);
+    }
+
+	/**
 	 * Check if there is an alternation of P1 next to P2, starting at (row,col) in
 	 * direction (drow,dcol). That is, starting at (row,col) and heading in
 	 * direction (drow,dcol), you encounter a sequence of at least one P1 followed
@@ -92,10 +112,7 @@ public class OthelloBoard {
 	 *         alternation
 	 */
 	private char alternation(int row, int col, int drow, int dcol) {
-		if (drow < -1 || drow > 1) return EMPTY;
-		if (dcol < -1 || dcol > 1) return EMPTY;
-		if (drow == 0 && dcol == 0) return EMPTY;
-		// TODO make isValidDirection(drow, dcol) method
+		if (!validDirection(drow, dcol)) return EMPTY;
 		char firstPiece;
 		char secondPiece;
 		do {
@@ -103,7 +120,9 @@ public class OthelloBoard {
 			row += drow;
 			col += dcol;
 			secondPiece = get(row, col);
-			if (otherPlayer(firstPiece) == secondPiece) {
+			if (secondPiece == EMPTY) {
+				return EMPTY;
+			} else if (secondPiece == otherPlayer(firstPiece)) {
 				return secondPiece;
 			}
 		} while (validCoordinate(row, col));
@@ -127,9 +146,7 @@ public class OthelloBoard {
 	 */
 	private int flip(int row, int col, int drow, int dcol, char player) {
 		if (player != P1 && player != P2) return -1;
-		// TODO helper method for this check?
-		if (drow < -1 || drow > 1) return EMPTY;
-		if (dcol < -1 || dcol > 1) return EMPTY;
+		if (!validDirection(drow, dcol)) return -1;
 		int count = 0;
 		if (player == hasMove(row, col, drow, dcol)) {
 			char piece;
@@ -155,30 +172,16 @@ public class OthelloBoard {
 	 * @return P1,P2,EMPTY
 	 */
 	private char hasMove(int row, int col, int drow, int dcol) {
-		char piece = get(row, col);
-		if (piece != EMPTY) return EMPTY;
-		char otherPlayer = get(row + drow, col + dcol);
-		if (otherPlayer == P1 || otherPlayer == P2) {
-			char player = otherPlayer(otherPlayer);
-			do {
-				// TODO first is always true cause its repeat of otherPlayer
-				row += drow;
-				col += dcol;
-				piece = get(row, col);
-			} while (piece == otherPlayer);
-			if (player == piece) return player;
-		}
-		return EMPTY;
+		if (get(row, col) != EMPTY) return EMPTY;
+		return alternation(row, col, drow, dcol);
 	}
 
 	/**
-	 * Return which player has a move (row,col) in directions drow {-1, 0, 1}
-	 * to direction dcol {-1, 0, 1}.
+	 * Return which player has a move at (row,col)
 	 *
 	 * @param row  starting row, in {0,...,dim-1} (typically {0,...,7})
 	 * @param col  starting col, in {0,...,dim-1} (typically {0,...,7})
-	 * @return whether P1,P2 or BOTH have a move somewhere on the board, EMPTY if
-	 *         neither do.
+	 * @return whether P1,P2 or BOTH have a move, EMPTY if neither do.
 	 */
 	public char hasMove(int row, int col) {
 		boolean hasMoveP1 = false;
@@ -190,12 +193,10 @@ public class OthelloBoard {
 				piece = hasMove(row, col, drow, dcol);
 				if (!hasMoveP1 && piece == P1) {
 					hasMoveP1 = true;
-				}
-				if (!hasMoveP2 && piece == P2) {
+				} else if (!hasMoveP2 && piece == P2) {
 					hasMoveP2 = true;
 				}
 				if (hasMoveP1 && hasMoveP2) return BOTH;
-				//if (piece != EMPTY) return piece;
 			}
 		}
 		if (hasMoveP1) return P1;
@@ -214,15 +215,12 @@ public class OthelloBoard {
 		for (int row = 0; row < getDimension(); row++) {
 			for (int col = 0; col < getDimension(); col++) {
 				char piece = get(row, col);
-				// TODO need to check for case Empty (new move)
-				// TODO need to check for case of not Empty (check if surrounded)
 				if (piece != EMPTY) continue;
 				char player = hasMove(row, col);
 				if (player == BOTH) return BOTH;
 				if (!hasMoveP1 && player == P1) {
 					hasMoveP1 = true;
-				}
-				if (!hasMoveP2 && player == P2) {
+				} else if (!hasMoveP2 && player == P2) {
 					hasMoveP2 = true;
 				}
 				if (hasMoveP1 && hasMoveP2) return BOTH;

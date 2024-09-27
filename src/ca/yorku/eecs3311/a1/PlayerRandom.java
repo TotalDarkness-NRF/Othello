@@ -11,36 +11,41 @@ import java.util.Random;
  * @author ilir
  *
  */
-public class PlayerRandom {
-	private Othello othello;
-	private char player;
-	private Random rand = new Random();
+public class PlayerRandom extends Player {
+	private final Random rand = new Random();
 
-	public PlayerRandom(Othello othello, char player) {
-		this.othello = othello;
-		this.player = player;
-	}
-
+	/**
+	 * Gets a random move from a list of possible moves the player can make.
+	 *
+	 * @return a random move from any possible moves the player can make.
+	 */
 	public Move getMove() {
-		if (othello.getWhosTurn() != player) {
-			return null;
-		}
+		if (othello.getWhosTurn() != player) return null;
 		char hasMove = othello.getBoard().hasMove();
-		// TODO acceptable to send null?
 		if (hasMove == OthelloBoard.EMPTY || hasMove == OthelloBoard.otherPlayer(player)) {
 			return null;
 		}
+		ArrayList<Move> moves = getMoves();
+		if (moves.isEmpty()) return null;
+		return moves.get(rand.nextInt(moves.size()));
+	}
+
+	/**
+	 * Gets a list of possible moves that the player can make.
+	 *
+	 * @return list of possible moves.
+	 */
+	public ArrayList<Move> getMoves() {
 		ArrayList<Move> moves = new ArrayList<>();
 		for (int row = 0; row < othello.getBoard().getDimension(); row++) {
 			for (int col = 0; col < othello.getBoard().getDimension(); col++) {
-				hasMove = othello.getBoard().hasMove(row, col);
+				char hasMove = othello.getBoard().hasMove(row, col);
 				if (hasMove == OthelloBoard.BOTH || hasMove == player) {
 					moves.add(new Move(row, col));
 				}
 			}
 		}
-		if (moves.isEmpty()) return null;
-		return moves.get(rand.nextInt(moves.size()));
+		return moves;
 	}
 }
 
