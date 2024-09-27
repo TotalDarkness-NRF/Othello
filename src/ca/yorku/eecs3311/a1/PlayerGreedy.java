@@ -32,29 +32,23 @@ public class PlayerGreedy extends Player {
 	 */
 	public Move getMove() {
 		if (this.othello.getWhosTurn() != player) return null;
-		char hasMove = othello.getBoard().hasMove();
-		if (hasMove == OthelloBoard.EMPTY || hasMove == OthelloBoard.otherPlayer(player)) {
-			return null;
-		}
 		int count, maxPieces = 0;
 		Move move = null;
 		for (int row = 0; row < othello.getBoard().getDimension(); row++) {
 			for (int col = 0; col < othello.getBoard().getDimension(); col++) {
-				hasMove = othello.getBoard().hasMove(row, col);
-				if (hasMove == player || hasMove == OthelloBoard.BOTH) {
-					count = getMoveCounts(row, col);
-					if (count >= maxPieces) {
-						if (move != null && count == maxPieces) {
-							if (row > move.getRow()) continue;
-							else if (row == move.getRow()) {
-								if (col > move.getCol()) continue;
-							}
-						}
-						maxPieces = count;
-						move = new Move(row, col);
-					}
-				}
-			}
+				char hasMove = othello.getBoard().hasMove(row, col);
+				if (hasMove != player && hasMove != OthelloBoard.BOTH) continue;
+                count = getMoveCounts(row, col);
+				if (count < maxPieces) continue;
+                if (move != null && count == maxPieces) {
+                    if (row > move.getRow()) continue;
+                    else if (row == move.getRow()) {
+                        if (col > move.getCol()) continue;
+                    }
+                }
+                maxPieces = count;
+                move = new Move(row, col);
+            }
 		}
 		return maxPieces == 0 ? null : move;
 	}
