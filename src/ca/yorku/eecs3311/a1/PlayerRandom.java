@@ -15,6 +15,21 @@ public class PlayerRandom extends Player {
 	private final Random rand = new Random();
 
 	/**
+	 * Create an unset Random Player to be set later.
+	 */
+	public PlayerRandom() {
+	}
+
+	/**
+	 * Create a Random Player with othello and player information.
+	 * @param othello the othello game
+	 * @param player the player character
+	 */
+	public PlayerRandom(Othello othello, char player) {
+		super(othello, player);
+	}
+
+	/**
 	 * Gets a random move from a list of possible moves the player can make.
 	 *
 	 * @return a random move from any possible moves the player can make.

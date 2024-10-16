@@ -23,6 +23,21 @@ package ca.yorku.eecs3311.a1;
 public class PlayerGreedy extends Player {
 
 	/**
+	 * Create an unset Greedy Player to be set later.
+	 */
+	public PlayerGreedy() {
+	}
+
+	/**
+	 * Create a Greedy Player with othello and player information.
+	 * @param othello the othello game
+	 * @param player the player character
+	 */
+	public PlayerGreedy(Othello othello, char player) {
+		super(othello, player);
+	}
+
+	/**
 	 * Gets a move by considering all possible moves that the player.
 	 * Picks the moves that will increase the number tokens the most.
 	 * If two moves have the same max, the move with the smallest row is chosen.

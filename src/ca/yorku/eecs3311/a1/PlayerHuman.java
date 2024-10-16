@@ -14,8 +14,24 @@ import java.io.InputStreamReader;
  *
  */
 public class PlayerHuman extends Player {
-	private static final String INVALID_INPUT_MESSAGE = "Invalid number, please enter 1-8";
+	private static final String INVALID_INPUT_MESSAGE = "Invalid number, please enter 0-7";
+	private static final String IO_ERROR_MESSAGE = "I/O Error";
 	private static final BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
+
+	/**
+	 * Create an unset Human Player to be set later.
+	 */
+	public PlayerHuman() {
+	}
+
+	/**
+	 * Create a Human Player with othello and player information.
+	 * @param othello the othello game
+	 * @param player the player character
+	 */
+	public PlayerHuman(Othello othello, char player) {
+		super(othello, player);
+	}
 
 	/**
 	 * Requests input from a human player in console.
@@ -51,7 +67,7 @@ public class PlayerHuman extends Player {
 					System.out.println(INVALID_INPUT_MESSAGE);
 				}
 			} catch (IOException e) {
-				System.out.println(INVALID_INPUT_MESSAGE);
+				System.out.println(IO_ERROR_MESSAGE);
 				break;
 			} catch (NumberFormatException e) {
 				System.out.println(INVALID_INPUT_MESSAGE);
