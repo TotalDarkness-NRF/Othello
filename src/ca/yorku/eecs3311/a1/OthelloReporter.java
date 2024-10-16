@@ -13,7 +13,8 @@ public final class OthelloReporter {
      * @param move the move that they made.
      */
     public static void reportMove(Othello othello, Move move) {
-        System.out.println(othello.getWhosTurn() + " makes move " + move + "\n");
+        String report = othello.getWhosTurn() + " makes move " + move + "\n";
+        System.out.println(report);
     }
 
     /**
@@ -22,11 +23,11 @@ public final class OthelloReporter {
      * @param othello the othello game to report.
      */
     public static void report(Othello othello) {
-        String s = othello.getBoardString() + OthelloBoard.P1 + ":"
+        String report = othello.getBoardString() + OthelloBoard.P1 + ":"
                 + othello.getCount(OthelloBoard.P1) + " "
                 + OthelloBoard.P2 + ":" + othello.getCount(OthelloBoard.P2) + "  "
                 + othello.getWhosTurn() + " moves next";
-        System.out.println(s);
+        System.out.println(report);
     }
 
     /**
@@ -35,10 +36,10 @@ public final class OthelloReporter {
      * @param othello the othello game to report.
      */
     public static void reportFinal(Othello othello) {
-        String s = othello.getBoardString() + OthelloBoard.P1 + ":"
+        String report = othello.getBoardString() + OthelloBoard.P1 + ":"
                 + othello.getCount(OthelloBoard.P1) + " "
                 + OthelloBoard.P2 + ":" + othello.getCount(OthelloBoard.P2)
                 + "  " + othello.getWinner() + " won\n";
-        System.out.println(s);
+        System.out.println(report);
     }
 }
