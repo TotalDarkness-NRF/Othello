@@ -31,6 +31,7 @@ public class OthelloControllerRandomVSRandom extends OthelloController {
 	public void play() {
 		play(false);
 	}
+
 	/**
 	 * Run main to execute the simulation and print out the two line results.
 	 * Output looks like 
