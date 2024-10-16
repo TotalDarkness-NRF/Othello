@@ -1,6 +1,7 @@
 package ca.yorku.eecs3311.a1;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -40,7 +41,7 @@ public class PlayerRandom extends Player {
 		if (hasMove == OthelloBoard.EMPTY || hasMove == OthelloBoard.otherPlayer(player)) {
 			return null;
 		}
-		ArrayList<Move> moves = getMoves();
+		List<Move> moves = getMoves();
 		if (moves.isEmpty()) return null;
 		return moves.get(rand.nextInt(moves.size()));
 	}
@@ -50,8 +51,8 @@ public class PlayerRandom extends Player {
 	 *
 	 * @return list of possible moves.
 	 */
-	public ArrayList<Move> getMoves() {
-		ArrayList<Move> moves = new ArrayList<>();
+	public List<Move> getMoves() {
+		List<Move> moves = new ArrayList<>();
 		for (int row = 0; row < othello.getBoard().getDimension(); row++) {
 			for (int col = 0; col < othello.getBoard().getDimension(); col++) {
 				char hasMove = othello.getBoard().hasMove(row, col);
