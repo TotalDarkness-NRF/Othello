@@ -18,6 +18,7 @@ import java.util.Random;
 public class Othello {
 	public static final int DIMENSION = 8;
 	private char whosTurn = OthelloBoard.P1;
+	private int numMoves = 0;
 	private final OthelloBoard board = new OthelloBoard(DIMENSION);
 
 	/**
@@ -48,6 +49,7 @@ public class Othello {
 	 */
 	public boolean move(int row, int col) {
 		if (board.move(row, col, getWhosTurn())) {
+			numMoves++;
 			char hasMove = board.hasMove();
 			if (hasMove == OthelloBoard.BOTH) {
 				whosTurn = OthelloBoard.otherPlayer(getWhosTurn());

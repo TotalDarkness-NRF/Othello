@@ -8,7 +8,6 @@ package othello.model;
  *
  */
 public class OthelloControllerHumanVSRandom extends OthelloController {
-	private final OthelloReporter reporter;
 
 	/**
 	 * Constructs a new OthelloController with a new Othello game, ready to play
@@ -16,20 +15,6 @@ public class OthelloControllerHumanVSRandom extends OthelloController {
 	 */
 	public OthelloControllerHumanVSRandom() {
 		super(new Othello(), new PlayerHuman(), new PlayerRandom());
-		this.reporter = new OthelloReporter(othello);
-	}
-
-	/**
-	 * Plays a Human Vs a computer using a random strategy.
-	 */
-	public void play() {
-		while (!othello.isGameOver()) {
-			reporter.report();
-			Move move = getNextMove();
-			reporter.reportMove(othello.getWhosTurn(), move);
-			othello.move(move.getRow(), move.getCol());
-		}
-		reporter.reportFinal();
 	}
 	
 	/**

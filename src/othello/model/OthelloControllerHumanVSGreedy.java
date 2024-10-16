@@ -8,7 +8,6 @@ package othello.model;
  *
  */
 public class OthelloControllerHumanVSGreedy extends OthelloController {
-	private final OthelloReporter reporter;
 
 	/**
 	 * Constructs a new OthelloController with a new Othello game, ready to play
@@ -16,20 +15,6 @@ public class OthelloControllerHumanVSGreedy extends OthelloController {
 	 */
 	public OthelloControllerHumanVSGreedy() {
 		super(new Othello(), new PlayerHuman(), new PlayerGreedy());
-		this.reporter = new OthelloReporter(this.othello);
-	}
-
-	/**
-	 * Plays a Human Vs a computer using a greedy strategy.
-	 */
-	public void play() {
-		while (!othello.isGameOver()) {
-			reporter.report();
-			Move move = getNextMove();
-			reporter.reportMove(othello.getWhosTurn(), move);
-			othello.move(move.getRow(), move.getCol());
-		}
-		reporter.reportFinal();
 	}
 	
 	/**

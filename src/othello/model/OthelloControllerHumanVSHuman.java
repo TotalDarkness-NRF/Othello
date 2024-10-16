@@ -8,7 +8,6 @@ package othello.model;
  *
  */
 public class OthelloControllerHumanVSHuman extends OthelloController {
-	private final OthelloReporter reporter;
 
 	/**
 	 * Constructs a new OthelloController with a new Othello game, ready to play
@@ -16,20 +15,6 @@ public class OthelloControllerHumanVSHuman extends OthelloController {
 	 */
 	public OthelloControllerHumanVSHuman() {
 		super(new Othello(), new PlayerHuman(), new PlayerHuman());
-		this.reporter = new OthelloReporter(this.othello);
-	}
-
-	/**
-	 * Plays a Human Vs Human.
-	 */
-	public void play() {
-		while (!othello.isGameOver()) {
-			reporter.report();
-			Move move = getNextMove();
-			reporter.reportMove(othello.getWhosTurn(), move);
-			othello.move(move.getRow(), move.getCol());
-		}
-		reporter.reportFinal();
 	}
 
 	/**
@@ -40,6 +25,5 @@ public class OthelloControllerHumanVSHuman extends OthelloController {
 		OthelloController oc = new OthelloControllerHumanVSHuman();
 		oc.play();
 	}
-
 }
 

@@ -1,11 +1,11 @@
 package othello.model;
 
 /**
- * A generic OthelloController class that provides basic
+ * An OthelloController class that provides basic
  * functionality to play an Othello game against various
  * player strategies.
  */
-public abstract class OthelloController {
+public class OthelloController {
     protected final Othello othello;
     protected final Player player1, player2;
 
@@ -27,9 +27,25 @@ public abstract class OthelloController {
     }
 
     /**
-     * Play the Othello game
+     * Play the Othello game. Report the game if required.
+     * @param report if the game should be reported
      */
-    public abstract void play();
+    public final void play(boolean report) {
+        while (!othello.isGameOver()) {
+            if (report) OthelloReporter.report(othello);
+            Move move = getNextMove();
+            if (report) OthelloReporter.reportMove(othello, move);
+            othello.move(move.getRow(), move.getCol());
+        }
+        if (report) OthelloReporter.reportFinal(othello);
+    }
+
+    /**
+     * Play the othello game. Reports the game by default.
+     */
+    public void play() {
+        play(true);
+    }
 
     /**
      *
