@@ -82,7 +82,7 @@ Features:
 		Scene scene = new Scene(root, 300, 200);
 
 		// Set up the action for the button
-		btn1.setOnAction(e -> switchToNewScene(stage, scene));
+		btn1.setOnAction(e -> switchToNewScene(stage));
 
 		// Set up the primary stage and show the first scene
 		stage.setTitle("Primary Scene");
@@ -90,15 +90,16 @@ Features:
 		stage.show();
 	}
 
-	private void switchToNewScene(Stage stage, Scene scene1) {
+	private void switchToNewScene(Stage stage) {
 		// Create the second scene
 		Button btn2 = new Button("Back to First GUI");
 		StackPane root2 = new StackPane();
 		root2.getChildren().add(btn2);
 		Scene scene2 = new Scene(root2, 300, 200);
+		Scene oldScene = stage.getScene().getRoot().getScene();
 
 		// Action for the second button to go back to the first scene
-		btn2.setOnAction(e -> stage.setScene(scene1));
+		btn2.setOnAction(e -> stage.setScene(oldScene));
 
 		// Switch to the new scene
 		stage.setScene(scene2);
