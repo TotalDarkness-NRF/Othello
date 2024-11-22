@@ -1,6 +1,6 @@
 package othello.viewcontroller;
-import othello.model.*;
 
+import othello.model.*;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -43,6 +44,7 @@ Features:
 	
 	@Override
 	public void start(Stage stage) throws Exception {
+		/*
 		// Create and hook up the Model, View and the controller
 
 		// MODEL
@@ -50,20 +52,56 @@ Features:
 
 		// CONTROLLER
 		// CONTROLLER->MODEL hookup
+		// https://docs.oracle.com/javase/8/javafx/events-tutorial/processing.htm#CEGJAAFD
+		// https://docs.oracle.com/javase/8/javafx/api/javafx/event/Event.html
+		//CButtonPressEventHandler cpresshandler=new CButtonPressEventHandler(mcounter);
+		Button playButton = new Button("Play");
 
 		// VIEW
 		// VIEW->CONTROLLER hookup
 		// MODEL->VIEW hookup
 
-		GridPane grid = new GridPane();
+		//GridPane grid = new GridPane();
+		HBox root = new HBox();
+		root.setPadding(new Insets(5));
+		root.getChildren().addAll(playButton);
 
 		// SCENE
-		Scene scene = new Scene(grid);
+		//Scene scene = new Scene(grid);
+		Scene scene = new Scene(root);
 		stage.setTitle("Othello");
 		stage.setScene(scene);
 
 		// LAUNCH THE GUI
 		stage.show();
+		 */
+		// Create the first scene with a button
+		Button btn1 = new Button("Go to New GUI");
+		StackPane root = new StackPane();
+		root.getChildren().add(btn1);
+		Scene scene = new Scene(root, 300, 200);
+
+		// Set up the action for the button
+		btn1.setOnAction(e -> switchToNewScene(stage, scene));
+
+		// Set up the primary stage and show the first scene
+		stage.setTitle("Primary Scene");
+		stage.setScene(scene);
+		stage.show();
+	}
+
+	private void switchToNewScene(Stage stage, Scene scene1) {
+		// Create the second scene
+		Button btn2 = new Button("Back to First GUI");
+		StackPane root2 = new StackPane();
+		root2.getChildren().add(btn2);
+		Scene scene2 = new Scene(root2, 300, 200);
+
+		// Action for the second button to go back to the first scene
+		btn2.setOnAction(e -> stage.setScene(scene1));
+
+		// Switch to the new scene
+		stage.setScene(scene2);
 	}
 
 	public static void main(String[] args) {
