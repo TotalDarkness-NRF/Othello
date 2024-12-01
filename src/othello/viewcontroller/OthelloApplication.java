@@ -82,7 +82,7 @@ Features:
 		Scene scene = new Scene(root, 300, 200);
 
 		// Set up the action for the button
-		btn1.setOnAction(e -> switchToNewScene(stage));
+		btn1.setOnAction(e -> new PlayerSelectScene(stage));
 
 		// Set up the primary stage and show the first scene
 		stage.setTitle("Primary Scene");
