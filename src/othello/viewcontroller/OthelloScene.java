@@ -46,7 +46,7 @@ public class OthelloScene extends Scene {
         Button restart = new Button("Restart");
         restart.setOnAction(e -> new OthelloScene(stage, new Othello(), player1, player2));
         Button save = new Button("Save");
-        save.setOnAction(e -> chooseFile(stage).ifPresent(this::saveOthelloToFile));
+        save.setOnAction(e -> chooseFile(stage, true).ifPresent(this::saveOthelloToFile));
         Button undo = new Button("Undo");
         Button redo = new Button("Redo");
         HBox buttons = new HBox(10);
@@ -102,11 +102,10 @@ public class OthelloScene extends Scene {
         try {
             FileOutputStream fileOut = new FileOutputStream(file);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
-            out.writeObject(othello);
+            out.writeObject(new OthelloGame(othello, player1, player2));
             System.out.printf("Object has been serialized and saved to %s\n", file.getName());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
 }
