@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
@@ -45,16 +46,25 @@ public class OthelloScene extends Scene {
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
                 Rectangle square = new Rectangle(squareSize, squareSize);
-                int finalRow = row;
-                int finalCol = col;
-                // TODO handle moving
-                square.setOnMouseClicked(event -> System.out.println("row:" + finalRow + " col:" + finalCol));
+                final int finalRow = row, finalCol = col;
+                square.setOnMouseClicked(e -> handleOnSquareClick(finalRow, finalCol));
                 square.setFill(Color.GREEN);
                 square.setStroke(Color.BLACK); // Black border
+                Circle circle = new Circle(squareSize / 2, col % 2 == 0 ? Color.BLACK : Color.WHITE);
+                circle.setCenterX(squareSize / 2);
+                circle.setCenterY(squareSize / 4);
+                circle.setScaleX(0.85);
+                circle.setScaleY(0.85);
 
-                grid.add(square, col, row);
+                StackPane stackPane = new StackPane();
+                stackPane.getChildren().addAll(square, circle);
+                grid.add(stackPane, col, row);
             }
         }
         return grid;
+    }
+
+    private void handleOnSquareClick(int row, int col) {
+        // TODO handle moving
     }
 }
