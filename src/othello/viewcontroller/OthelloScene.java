@@ -29,10 +29,14 @@ public class OthelloScene extends Scene {
         Scene scene = new Scene(root, 450, 450);
         GridPane grid = new GridPane();
 
-        Button home = new Button("Home");
-        Scene oldScene = stage.getScene().getRoot().getScene();
-        home.setOnAction(e -> stage.setScene(oldScene));
-        grid.add(home, 0, 0);
+        Button home = new Button("Back");
+        home.setOnAction(e -> new PlayerSelectScene(stage));
+        Button restart = new Button("Restart");
+        restart.setOnAction(e -> new OthelloScene(stage, new Othello(), player1, player2));
+        GridPane buttons = new GridPane();
+        buttons.add(home, 0, 0);
+        buttons.add(restart, 1, 0);
+        grid.add(buttons, 0, 0);
         grid.add(othelloGrid, 0, 1);
         root.getChildren().add(grid);
         stage.setTitle("Othello");
