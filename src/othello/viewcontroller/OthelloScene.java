@@ -24,16 +24,16 @@ public class OthelloScene extends Scene {
         this.player1 = player1;
         this.player2 = player2;
         this.othelloGrid = createOthelloBoard();
-        othelloGrid.setAlignment(Pos.TOP_CENTER);
         createScene(stage);
     }
 
     private void createScene(Stage stage) {
-        VBox root = new VBox(10);
-        root.setAlignment(Pos.TOP_CENTER);
+        StackPane root = new StackPane();
+        root.setAlignment(Pos.CENTER);
+        othelloGrid.setAlignment(Pos.CENTER);
         Scene scene = new Scene(root, 450, 450);
-        VBox layout = new VBox(10);
-        layout.setAlignment(Pos.TOP_CENTER);
+        VBox layout = new VBox(1);
+        layout.setAlignment(Pos.CENTER);
         Button home = new Button("Back");
         home.setOnAction(e -> new PlayerSelectScene(stage));
         Button restart = new Button("Restart");
