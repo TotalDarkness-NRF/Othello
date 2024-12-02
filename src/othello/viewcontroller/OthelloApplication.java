@@ -1,14 +1,7 @@
 package othello.viewcontroller;
 
 import javafx.application.Application;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
-import java.io.File;
 
 public class OthelloApplication extends Application {
 
@@ -40,62 +33,10 @@ Features:
 	 */
 
 	@Override
-	public void start(Stage stage) throws Exception {
-		/*
-		// Create and hook up the Model, View and the controller
-
-		// MODEL
-		Othello othello = new Othello();
-
-		// CONTROLLER
-		// CONTROLLER->MODEL hookup
-		// https://docs.oracle.com/javase/8/javafx/events-tutorial/processing.htm#CEGJAAFD
-		// https://docs.oracle.com/javase/8/javafx/api/javafx/event/Event.html
-		//CButtonPressEventHandler cpresshandler=new CButtonPressEventHandler(mcounter);
-		Button playButton = new Button("Play");
-
-		// VIEW
-		// VIEW->CONTROLLER hookup
-		// MODEL->VIEW hookup
-
-		//GridPane grid = new GridPane();
-		HBox root = new HBox();
-		root.setPadding(new Insets(5));
-		root.getChildren().addAll(playButton);
-
-		// SCENE
-		//Scene scene = new Scene(grid);
-		Scene scene = new Scene(root);
-		stage.setTitle("Othello");
-		stage.setScene(scene);
-
-		// LAUNCH THE GUI
-		stage.show();
-		 */
-		// Create the first scene with a button
-		//StackPane root = new StackPane();
-		VBox root = new VBox(10);
-		root.setAlignment(Pos.CENTER);
-		Scene scene = new Scene(root, 400, 400);
-		Button play = new Button("Play Othello");
-		play.setOnAction(e -> new PlayerSelectScene(stage));
-		Button load = new Button("Load Game");
-		load.setOnAction(e -> chooseFile(stage));
-		Button exit = new Button("Exit");
-		exit.setOnAction(e -> stage.close());
-		root.getChildren().addAll(play, load, exit);
-		stage.setTitle("Home Othello");
-		stage.setScene(scene);
+	public void start(Stage stage) {
+		new HomeScene(stage);
 		stage.show();
 	}
-
-	private void chooseFile(Stage stage) {
-		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Save Othello Board");
-		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Othello Files", "*.othello"));
-		File file = fileChooser.showSaveDialog(stage);
-	}
-
 
 	public static void main(String[] args) {
 		OthelloApplication view = new OthelloApplication();

@@ -35,7 +35,7 @@ public class OthelloScene extends Scene {
         VBox layout = new VBox(1);
         layout.setAlignment(Pos.CENTER);
         Button home = new Button("Back");
-        home.setOnAction(e -> new PlayerSelectScene(stage)); // TODO cause last root to be this, players back turn to this
+        home.setOnAction(e -> new PlayerSelectScene(stage));
         Button restart = new Button("Restart");
         restart.setOnAction(e -> new OthelloScene(stage, new Othello(), player1, player2));
         Button save = new Button("Save");
@@ -51,7 +51,7 @@ public class OthelloScene extends Scene {
     }
 
     private GridPane createOthelloBoard() {
-        GridPane grid = new GridPane(1, 1  );
+        GridPane grid = new GridPane(1, 1);
         double squareSize = 50;
 
         for (int row = 0; row < 8; row++) {
