@@ -9,6 +9,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class PlayerSelectScene extends Scene {
+    Othello othello = new Othello();
     Player player1, player2;
     final Text player1Text = new Text("Not Selected");
     final Text player2Text = new Text("Not Selected");
@@ -20,19 +21,25 @@ public class PlayerSelectScene extends Scene {
 
     private void createScene(Stage stage) {
         StackPane root = new StackPane();
-        Scene scene = new Scene(root, 300, 200);
+        Scene scene = new Scene(root, 400, 400);
+
+        GridPane grid = createButtonGrid();
+        Button play = new Button("Play");
+        play.setOnAction(e -> switchToPlayScene(stage));
+        grid.add(play, 1, 5);
+
         Button home = new Button("Home");
         Scene oldScene = stage.getScene().getRoot().getScene();
         home.setOnAction(e -> stage.setScene(oldScene));
-        GridPane grid = createButtonGrid();
         grid.add(home, 1 , 6);
+
         root.getChildren().add(grid);
+        stage.setTitle("Select Player");
         stage.setScene(scene);
     }
 
     private GridPane createButtonGrid() {
         GridPane grid = new GridPane();
-        Othello othello = new Othello();
         Button playerHuman1 = new Button("Player Human");
         playerHuman1.setOnAction(e -> setPlayer1(new PlayerHuman(othello, OthelloBoard.P1)));
         Button playerGreedy1 = new Button("Player Greedy");
@@ -55,12 +62,13 @@ public class PlayerSelectScene extends Scene {
         grid.add(new Text("Select Player!"), 1, 0);
         grid.add(player1Text, 0, 4);
         grid.add(player2Text, 2, 4);
-
-        Button play = new Button("Play");
-        //play.setOnAction(e -> );
-
-        grid.add(play, 1, 5);
         return grid;
+    }
+
+    private void switchToPlayScene(Stage stage) {
+        System.out.println(player1 == null || player2 == null);
+        if (player1 == null || player2 == null) return;
+        new OthelloScene(stage, othello, player1, player2);
     }
 
     public void setPlayer1(Player player) {
