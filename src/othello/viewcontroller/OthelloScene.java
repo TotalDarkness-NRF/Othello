@@ -49,8 +49,11 @@ public class OthelloScene extends Scene {
                 final int finalRow = row, finalCol = col;
                 square.setOnMouseClicked(e -> handleOnSquareClick(finalRow, finalCol));
                 square.setFill(Color.GREEN);
-                square.setStroke(Color.BLACK); // Black border
-                Circle circle = new Circle(squareSize / 2, col % 2 == 0 ? Color.BLACK : Color.WHITE);
+                square.setStroke(Color.BLACK);
+                char player = othello.board.get(row, col);
+                Color color = player == OthelloBoard.P1 ? Color.WHITE : player == OthelloBoard.P2 ? Color.BLACK : Color.TRANSPARENT;
+                Circle circle = new Circle(squareSize / 2, color);
+
                 circle.setCenterX(squareSize / 2);
                 circle.setCenterY(squareSize / 4);
                 circle.setScaleX(0.85);

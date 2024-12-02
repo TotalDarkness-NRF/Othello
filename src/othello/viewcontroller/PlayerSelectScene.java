@@ -66,7 +66,6 @@ public class PlayerSelectScene extends Scene {
     }
 
     private void switchToPlayScene(Stage stage) {
-        System.out.println(player1 == null || player2 == null);
         if (player1 == null || player2 == null) return;
         new OthelloScene(stage, othello, player1, player2);
     }
