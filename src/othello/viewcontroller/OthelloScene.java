@@ -13,6 +13,13 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
+import static util.Util.chooseFile;
+
 public class OthelloScene extends Scene {
     final Othello othello;
     final Player player1, player2;
@@ -39,6 +46,7 @@ public class OthelloScene extends Scene {
         Button restart = new Button("Restart");
         restart.setOnAction(e -> new OthelloScene(stage, new Othello(), player1, player2));
         Button save = new Button("Save");
+        save.setOnAction(e -> chooseFile(stage).ifPresent(this::saveOthelloToFile));
         Button undo = new Button("Undo");
         Button redo = new Button("Redo");
         HBox buttons = new HBox(10);
@@ -88,6 +96,17 @@ public class OthelloScene extends Scene {
 
     private void updateBoard() {
         othelloGrid.getChildren().setAll(createOthelloBoard().getChildren());
+    }
+
+    private void saveOthelloToFile(File file) {
+        try {
+            FileOutputStream fileOut = new FileOutputStream(file);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(othello);
+            System.out.printf("Object has been serialized and saved to %s\n", file.getName());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

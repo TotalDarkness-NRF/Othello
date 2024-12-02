@@ -1,5 +1,6 @@
 package othello.model;
 
+import java.io.Serializable;
 import java.util.Random;
 
 /**
@@ -15,11 +16,11 @@ import java.util.Random;
  *
  *
  */
-public class Othello {
+public class Othello implements Serializable {
 	public static final int DIMENSION = 8;
 	private char whosTurn = OthelloBoard.P1;
 	private int numMoves = 0;
-	private final OthelloBoard board = new OthelloBoard(DIMENSION);
+	public OthelloBoard board = new OthelloBoard(DIMENSION);
 
 	/**
 	 *
@@ -95,7 +96,19 @@ public class Othello {
 	 */
 	public boolean isGameOver() {
 		return board.hasMove() == OthelloBoard.EMPTY;
-    }
+	}
+	
+	/**
+	 * 
+	 * @return a copy of this. The copy can be manipulated without impacting this.
+	 */
+	public Othello copy() {
+		Othello o= new Othello();
+		o.board=this.board.copy();
+		o.numMoves = this.numMoves;
+		o.whosTurn = this.whosTurn;
+		return o;
+	}
 
 	/**
 	 *

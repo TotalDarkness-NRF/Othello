@@ -1,5 +1,7 @@
 package othello.model;
 
+import java.io.Serializable;
+
 /**
  * Keep track of all of the tokens on the board. This understands some
  * interesting things about an Othello board, what the board looks like at the
@@ -13,7 +15,7 @@ package othello.model;
  * @author Ilir
  *
  */
-public class OthelloBoard {
+public class OthelloBoard implements Serializable {
 	public static final char EMPTY = ' ', P1 = 'X', P2 = 'O', BOTH = 'B';
 	private final int dim;
 	private final char[][] board;
@@ -34,6 +36,20 @@ public class OthelloBoard {
 		int mid = this.dim / 2;
 		this.board[mid - 1][mid - 1] = this.board[mid][mid] = P1;
 		this.board[mid][mid - 1] = this.board[mid - 1][mid] = P2;
+	}
+	
+	/**
+	 * 
+	 * @return a copy of this
+	 */
+	public OthelloBoard copy() {
+		OthelloBoard ob = new OthelloBoard(this.dim);
+		for (int row = 0; row < this.dim; row++) {
+			for (int col = 0; col < this.dim; col++) {
+				ob.board[row][col] = this.board[row][col];
+			}
+		}
+		return ob;
 	}
 
 	/**
