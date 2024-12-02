@@ -76,33 +76,16 @@ Features:
 		stage.show();
 		 */
 		// Create the first scene with a button
-		Button btn1 = new Button("Go to New GUI");
+		Button btn1 = new Button("Play Othello");
 		StackPane root = new StackPane();
 		root.getChildren().add(btn1);
-		Scene scene = new Scene(root, 300, 200);
+		Scene scene = new Scene(root, 400, 400);
 
-		// Set up the action for the button
 		btn1.setOnAction(e -> new PlayerSelectScene(stage));
 
-		// Set up the primary stage and show the first scene
-		stage.setTitle("Primary Scene");
+		stage.setTitle("Home Othello");
 		stage.setScene(scene);
 		stage.show();
-	}
-
-	private void switchToNewScene(Stage stage) {
-		// Create the second scene
-		Button btn2 = new Button("Back to First GUI");
-		StackPane root2 = new StackPane();
-		root2.getChildren().add(btn2);
-		Scene scene2 = new Scene(root2, 300, 200);
-		Scene oldScene = stage.getScene().getRoot().getScene();
-
-		// Action for the second button to go back to the first scene
-		btn2.setOnAction(e -> stage.setScene(oldScene));
-
-		// Switch to the new scene
-		stage.setScene(scene2);
 	}
 
 	public static void main(String[] args) {
