@@ -28,11 +28,11 @@ public class HomeScene extends Scene {
         root.setAlignment(Pos.CENTER);
         Scene scene = new Scene(root, 400, 400);
         Button play = new Button("Play Othello");
-        play.setOnAction(e -> new PlayerSelectScene(stage));
+        play.setOnAction(_ -> new PlayerSelectScene(stage));
         Button load = new Button("Load Game");
-        load.setOnAction(e -> loadOthelloGame(stage));
+        load.setOnAction(_ -> loadOthelloGame(stage));
         Button exit = new Button("Exit");
-        exit.setOnAction(e -> stage.close());
+        exit.setOnAction(_ -> stage.close());
         root.getChildren().addAll(play, load, exit);
         stage.setTitle("Home Othello");
         stage.setScene(scene);
@@ -51,7 +51,7 @@ public class HomeScene extends Scene {
             OthelloGame othelloGame = (OthelloGame) in.readObject();
             return Optional.ofNullable(othelloGame);
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            System.out.println("Othello game failed to load!");
         }
         return Optional.empty();
     }

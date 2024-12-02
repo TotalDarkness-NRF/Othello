@@ -42,11 +42,11 @@ public class OthelloScene extends Scene {
         VBox layout = new VBox(1);
         layout.setAlignment(Pos.CENTER);
         Button home = new Button("Back");
-        home.setOnAction(e -> new PlayerSelectScene(stage));
+        home.setOnAction(_ -> new PlayerSelectScene(stage));
         Button restart = new Button("Restart");
-        restart.setOnAction(e -> new OthelloScene(stage, new Othello(), player1, player2));
+        restart.setOnAction(_ -> new OthelloScene(stage, new Othello(), player1, player2));
         Button save = new Button("Save");
-        save.setOnAction(e -> chooseFile(stage, true).ifPresent(this::saveOthelloToFile));
+        save.setOnAction(_ -> chooseFile(stage, true).ifPresent(this::saveOthelloToFile));
         Button undo = new Button("Undo");
         Button redo = new Button("Redo");
         HBox buttons = new HBox(10);
@@ -71,7 +71,7 @@ public class OthelloScene extends Scene {
                 if (player == OthelloBoard.EMPTY) {
                     grid.add(square, col, row);
                     final int finalRow = row, finalCol = col;
-                    square.setOnMouseClicked(e -> handleOnSquareClick(finalRow, finalCol));
+                    square.setOnMouseClicked(_ -> handleOnSquareClick(finalRow, finalCol));
                     continue;
                 }
                 Color color = player == OthelloBoard.P1 ? Color.BLACK : Color.WHITE;
@@ -103,9 +103,8 @@ public class OthelloScene extends Scene {
             FileOutputStream fileOut = new FileOutputStream(file);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(new OthelloGame(othello, player1, player2));
-            System.out.printf("Object has been serialized and saved to %s\n", file.getName());
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Othello game failed to save to file!");
         }
     }
 }
