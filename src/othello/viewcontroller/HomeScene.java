@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.Optional;
 
 import static util.Util.chooseFile;
 
@@ -29,7 +30,7 @@ public class HomeScene extends Scene {
         Button play = new Button("Play Othello");
         play.setOnAction(e -> new PlayerSelectScene(stage));
         Button load = new Button("Load Game");
-        load.setOnAction(e -> chooseFile(stage, false).ifPresent(this::loadOthelloFile));
+        load.setOnAction(e -> loadOthelloGame(stage));
         Button exit = new Button("Exit");
         exit.setOnAction(e -> stage.close());
         root.getChildren().addAll(play, load, exit);
@@ -37,14 +38,21 @@ public class HomeScene extends Scene {
         stage.setScene(scene);
     }
 
-    private void loadOthelloFile(File file) {
+    private void loadOthelloGame(Stage stage) {
+        chooseFile(stage, false)
+                .flatMap(this::loadOthelloFile)
+                .ifPresent(game -> new OthelloScene(stage, game.getOthello(), game.getPlayer1(), game.getPlayer2()));
+    }
+
+    private Optional<OthelloGame> loadOthelloFile(File file) {
         try {
             FileInputStream fileIn = new FileInputStream(file);
             ObjectInputStream in = new ObjectInputStream(fileIn);
-            OthelloGame othello = (OthelloGame) in.readObject();
-            System.out.println("Deserialized Person object: " + othello);
+            OthelloGame othelloGame = (OthelloGame) in.readObject();
+            return Optional.ofNullable(othelloGame);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+        return Optional.empty();
     }
 }
