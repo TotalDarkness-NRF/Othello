@@ -63,5 +63,10 @@ public class PlayerRandom extends Player {
 		}
 		return moves;
 	}
+
+	@Override
+	public String toString() {
+		return "Player Random";
+	}
 }
 

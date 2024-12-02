@@ -75,5 +75,10 @@ public class PlayerHuman extends Player {
 		}
 		return -1;
 	}
+
+	@Override
+	public String toString() {
+		return "Player Human";
+	}
 }
 

@@ -112,4 +112,9 @@ public class PlayerGreedy extends Player {
 		}
 		return count;
 	}
+	
+	@Override
+	public String toString() {
+		return "Player Greedy";
+	}
 }
