@@ -35,13 +35,16 @@ public class OthelloScene extends Scene {
         VBox layout = new VBox(1);
         layout.setAlignment(Pos.CENTER);
         Button home = new Button("Back");
-        home.setOnAction(e -> new PlayerSelectScene(stage));
+        home.setOnAction(e -> new PlayerSelectScene(stage)); // TODO cause last root to be this, players back turn to this
         Button restart = new Button("Restart");
         restart.setOnAction(e -> new OthelloScene(stage, new Othello(), player1, player2));
+        Button save = new Button("Save");
+        Button undo = new Button("Undo");
+        Button redo = new Button("Redo");
         HBox buttons = new HBox(10);
         buttons.setAlignment(Pos.CENTER);
-        buttons.getChildren().addAll(home, restart);
-        layout.getChildren().addAll(buttons, othelloGrid);
+        buttons.getChildren().addAll(home, save, restart, undo, redo);
+        layout.getChildren().addAll(othelloGrid, buttons);
         root.getChildren().add(layout);
         stage.setTitle("Othello");
         stage.setScene(scene);
