@@ -13,12 +13,14 @@ import javafx.stage.Stage;
 public class OthelloScene extends Scene {
     final Othello othello;
     final Player player1, player2;
+    final GridPane othelloGrid;
 
     public OthelloScene(Stage stage, Othello othello, Player player1, Player player2) {
         super(new StackPane());
         this.othello = othello;
         this.player1 = player1;
         this.player2 = player2;
+        this.othelloGrid = createOthelloBoard();
         createScene(stage);
     }
 
@@ -31,27 +33,29 @@ public class OthelloScene extends Scene {
         Scene oldScene = stage.getScene().getRoot().getScene();
         home.setOnAction(e -> stage.setScene(oldScene));
         grid.add(home, 0, 0);
-        grid.add(createOthelloBoard(), 0, 1);
+        grid.add(othelloGrid, 0, 1);
         root.getChildren().add(grid);
         stage.setTitle("Othello");
         stage.setScene(scene);
     }
 
     private GridPane createOthelloBoard() {
-        GridPane grid = new GridPane();
-        grid.setHgap(1);
-        grid.setVgap(1);
+        GridPane grid = new GridPane(1, 1  );
         double squareSize = 50;
 
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
                 Rectangle square = new Rectangle(squareSize, squareSize);
-                final int finalRow = row, finalCol = col;
-                square.setOnMouseClicked(e -> handleOnSquareClick(finalRow, finalCol));
                 square.setFill(Color.GREEN);
                 square.setStroke(Color.BLACK);
                 char player = othello.board.get(row, col);
-                Color color = player == OthelloBoard.P1 ? Color.WHITE : player == OthelloBoard.P2 ? Color.BLACK : Color.TRANSPARENT;
+                if (player == OthelloBoard.EMPTY) {
+                    grid.add(square, col, row);
+                    final int finalRow = row, finalCol = col;
+                    square.setOnMouseClicked(e -> handleOnSquareClick(finalRow, finalCol));
+                    continue;
+                }
+                Color color = player == OthelloBoard.P1 ? Color.BLACK : Color.WHITE;
                 Circle circle = new Circle(squareSize / 2, color);
 
                 circle.setCenterX(squareSize / 2);
@@ -68,6 +72,11 @@ public class OthelloScene extends Scene {
     }
 
     private void handleOnSquareClick(int row, int col) {
-        // TODO handle moving
+        if (othello.move(row, col)) updateBoard();
     }
+
+    private void updateBoard() {
+        othelloGrid.getChildren().setAll(createOthelloBoard().getChildren());
+    }
+
 }
