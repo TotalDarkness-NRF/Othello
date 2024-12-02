@@ -5,7 +5,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.text.Text;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class OthelloScene extends Scene {
@@ -22,14 +23,38 @@ public class OthelloScene extends Scene {
 
     private void createScene(Stage stage) {
         StackPane root = new StackPane();
-        Scene scene = new Scene(root, 400, 400);
+        Scene scene = new Scene(root, 450, 450);
+        GridPane grid = new GridPane();
 
         Button home = new Button("Home");
         Scene oldScene = stage.getScene().getRoot().getScene();
         home.setOnAction(e -> stage.setScene(oldScene));
-
-        root.getChildren().add(home);
+        grid.add(home, 0, 0);
+        grid.add(createOthelloBoard(), 0, 1);
+        root.getChildren().add(grid);
         stage.setTitle("Othello");
         stage.setScene(scene);
+    }
+
+    private GridPane createOthelloBoard() {
+        GridPane grid = new GridPane();
+        grid.setHgap(1);
+        grid.setVgap(1);
+        double squareSize = 50;
+
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                Rectangle square = new Rectangle(squareSize, squareSize);
+                int finalRow = row;
+                int finalCol = col;
+                // TODO handle moving
+                square.setOnMouseClicked(event -> System.out.println("row:" + finalRow + " col:" + finalCol));
+                square.setFill(Color.GREEN);
+                square.setStroke(Color.BLACK); // Black border
+
+                grid.add(square, col, row);
+            }
+        }
+        return grid;
     }
 }
