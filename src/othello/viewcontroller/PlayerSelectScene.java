@@ -31,8 +31,7 @@ public class PlayerSelectScene extends Scene {
         play.setOnAction(e -> switchToPlayScene(stage));
 
         Button home = new Button("Back");
-        Scene oldScene = stage.getScene().getRoot().getScene();
-        home.setOnAction(e -> stage.setScene(oldScene));
+        home.setOnAction(e -> new HomeScene(stage));
         layout.getChildren().addAll(play, home);
 
         root.getChildren().add(layout);
