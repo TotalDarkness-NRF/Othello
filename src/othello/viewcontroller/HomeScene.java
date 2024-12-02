@@ -5,10 +5,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+
+import static util.Util.chooseFile;
 
 public class HomeScene extends Scene {
 
@@ -24,7 +25,7 @@ public class HomeScene extends Scene {
         Button play = new Button("Play Othello");
         play.setOnAction(e -> new PlayerSelectScene(stage));
         Button load = new Button("Load Game");
-        load.setOnAction(e -> chooseFile(stage));
+        load.setOnAction(e -> chooseFile(stage).ifPresent(this::loadOthelloFile));
         Button exit = new Button("Exit");
         exit.setOnAction(e -> stage.close());
         root.getChildren().addAll(play, load, exit);
@@ -32,10 +33,7 @@ public class HomeScene extends Scene {
         stage.setScene(scene);
     }
 
-    private void chooseFile(Stage stage) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save Othello Board");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Othello Files", "*.othello"));
-        File file = fileChooser.showSaveDialog(stage);
+    private void loadOthelloFile(File file) {
+
     }
 }
