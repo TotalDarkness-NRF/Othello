@@ -1,13 +1,15 @@
 package othello.model;
 
+import java.io.Serializable;
+
 /**
  * A generic Player class to be used by OthelloController
  * in order to construct Othello games against various players
  * using different strategies.
  */
-public abstract class Player {
-    protected Othello othello;
-    protected char player;
+public abstract class Player implements Serializable {
+	protected Othello othello;
+	protected char player;
 
     /**
      * Create an unset player that is to be set later.
