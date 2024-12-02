@@ -1,6 +1,7 @@
 package othello.viewcontroller;
 
 import othello.model.*;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
@@ -21,6 +22,7 @@ public class PlayerSelectScene extends Scene {
 
     private void createScene(Stage stage) {
         StackPane root = new StackPane();
+        root.setAlignment(Pos.CENTER);
         Scene scene = new Scene(root, 400, 400);
 
         GridPane grid = createButtonGrid();
@@ -40,6 +42,7 @@ public class PlayerSelectScene extends Scene {
 
     private GridPane createButtonGrid() {
         GridPane grid = new GridPane();
+        // TODO use strategy design pattern
         Button playerHuman1 = new Button("Player Human");
         playerHuman1.setOnAction(e -> setPlayer1(new PlayerHuman(othello, OthelloBoard.P1)));
         Button playerGreedy1 = new Button("Player Greedy");

@@ -1,10 +1,13 @@
 package othello.viewcontroller;
 
 import othello.model.*;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -21,24 +24,25 @@ public class OthelloScene extends Scene {
         this.player1 = player1;
         this.player2 = player2;
         this.othelloGrid = createOthelloBoard();
+        othelloGrid.setAlignment(Pos.TOP_CENTER);
         createScene(stage);
     }
 
     private void createScene(Stage stage) {
-        StackPane root = new StackPane();
+        VBox root = new VBox(10);
+        root.setAlignment(Pos.TOP_CENTER);
         Scene scene = new Scene(root, 450, 450);
-        GridPane grid = new GridPane();
-
+        VBox layout = new VBox(10);
+        layout.setAlignment(Pos.TOP_CENTER);
         Button home = new Button("Back");
         home.setOnAction(e -> new PlayerSelectScene(stage));
         Button restart = new Button("Restart");
         restart.setOnAction(e -> new OthelloScene(stage, new Othello(), player1, player2));
-        GridPane buttons = new GridPane();
-        buttons.add(home, 0, 0);
-        buttons.add(restart, 1, 0);
-        grid.add(buttons, 0, 0);
-        grid.add(othelloGrid, 0, 1);
-        root.getChildren().add(grid);
+        HBox buttons = new HBox(10);
+        buttons.setAlignment(Pos.CENTER);
+        buttons.getChildren().addAll(home, restart);
+        layout.getChildren().addAll(buttons, othelloGrid);
+        root.getChildren().add(layout);
         stage.setTitle("Othello");
         stage.setScene(scene);
     }

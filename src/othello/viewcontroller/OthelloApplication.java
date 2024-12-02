@@ -1,17 +1,14 @@
 package othello.viewcontroller;
 
-import othello.model.*;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
+import java.io.File;
 
 public class OthelloApplication extends Application {
 
@@ -39,9 +36,9 @@ Features:
     Load game from file
     Restart game button
     Undo move button
-    GUI to allow choice of different player types 
+    GUI to allow choice of different player types
 	 */
-	
+
 	@Override
 	public void start(Stage stage) throws Exception {
 		/*
@@ -76,17 +73,29 @@ Features:
 		stage.show();
 		 */
 		// Create the first scene with a button
-		Button btn1 = new Button("Play Othello");
-		StackPane root = new StackPane();
-		root.getChildren().add(btn1);
+		//StackPane root = new StackPane();
+		VBox root = new VBox(10);
+		root.setAlignment(Pos.CENTER);
 		Scene scene = new Scene(root, 400, 400);
-
-		btn1.setOnAction(e -> new PlayerSelectScene(stage));
-
+		Button play = new Button("Play Othello");
+		play.setOnAction(e -> new PlayerSelectScene(stage));
+		Button load = new Button("Load Game");
+		load.setOnAction(e -> chooseFile(stage));
+		Button exit = new Button("Exit");
+		exit.setOnAction(e -> stage.close());
+		root.getChildren().addAll(play, load, exit);
 		stage.setTitle("Home Othello");
 		stage.setScene(scene);
 		stage.show();
 	}
+
+	private void chooseFile(Stage stage) {
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Save Othello Board");
+		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Othello Files", "*.othello"));
+		File file = fileChooser.showSaveDialog(stage);
+	}
+
 
 	public static void main(String[] args) {
 		OthelloApplication view = new OthelloApplication();
