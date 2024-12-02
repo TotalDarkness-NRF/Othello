@@ -4,8 +4,9 @@ import othello.model.*;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -25,47 +26,51 @@ public class PlayerSelectScene extends Scene {
         root.setAlignment(Pos.CENTER);
         Scene scene = new Scene(root, 400, 400);
 
-        GridPane grid = createButtonGrid();
+        VBox layout = createLayout();
         Button play = new Button("Play");
         play.setOnAction(e -> switchToPlayScene(stage));
-        grid.add(play, 1, 5);
 
-        Button home = new Button("Home");
+        Button home = new Button("Back");
         Scene oldScene = stage.getScene().getRoot().getScene();
         home.setOnAction(e -> stage.setScene(oldScene));
-        grid.add(home, 1 , 6);
+        layout.getChildren().addAll(play, home);
 
-        root.getChildren().add(grid);
+        root.getChildren().add(layout);
         stage.setTitle("Select Player");
         stage.setScene(scene);
     }
 
-    private GridPane createButtonGrid() {
-        GridPane grid = new GridPane();
+    private VBox createLayout() {
         // TODO use strategy design pattern
+        VBox layout = new VBox(10);
+        layout.setAlignment(Pos.CENTER);
+        HBox playerButtons = new HBox(20);
+        playerButtons.setAlignment(Pos.CENTER);
+        VBox player1Buttons = new VBox(10);
+        player1Buttons.setAlignment(Pos.CENTER_LEFT);
+        VBox player2Buttons = new VBox(10);
+        player2Buttons.setAlignment(Pos.CENTER_RIGHT);
+
         Button playerHuman1 = new Button("Player Human");
         playerHuman1.setOnAction(e -> setPlayer1(new PlayerHuman(othello, OthelloBoard.P1)));
         Button playerGreedy1 = new Button("Player Greedy");
         playerGreedy1.setOnAction(e -> setPlayer1(new PlayerGreedy(othello, OthelloBoard.P1)));
         Button playerRandom1 = new Button("Player Random");
         playerRandom1.setOnAction(e -> setPlayer1(new PlayerRandom(othello, OthelloBoard.P1)));
+        player1Buttons.getChildren().addAll(playerHuman1, playerGreedy1, playerRandom1, player1Text);
+
         Button playerHuman2 = new Button("Player Human");
         playerHuman2.setOnAction(e -> setPlayer2(new PlayerHuman(othello, OthelloBoard.P2)));
         Button playerGreedy2 = new Button("Player Greedy");
         playerGreedy2.setOnAction(e -> setPlayer2(new  PlayerGreedy(othello, OthelloBoard.P2)));
         Button playerRandom2 = new Button("Player Random");
         playerRandom2.setOnAction(e -> setPlayer2(new PlayerRandom(othello, OthelloBoard.P2)));
+        player2Buttons.getChildren().addAll(playerHuman2, playerGreedy2, playerRandom2, player2Text);
 
-        grid.add(playerHuman1, 0, 1);
-        grid.add(playerGreedy1, 0, 2);
-        grid.add(playerRandom1, 0, 3);
-        grid.add(playerHuman2, 2, 1);
-        grid.add(playerGreedy2, 2, 2);
-        grid.add(playerRandom2, 2, 3);
-        grid.add(new Text("Select Player!"), 1, 0);
-        grid.add(player1Text, 0, 4);
-        grid.add(player2Text, 2, 4);
-        return grid;
+        playerButtons.getChildren().addAll(player1Buttons, player2Buttons);
+
+        layout.getChildren().addAll(new Text("Select Player!"), playerButtons);
+        return layout;
     }
 
     private void switchToPlayScene(Stage stage) {
