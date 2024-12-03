@@ -18,12 +18,8 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-
-import static util.Util.chooseFile;
+import static util.FileUtil.chooseFile;
+import static util.FileUtil.saveOthelloToFile;
 
 public class OthelloScene extends Scene implements Observer {
     final OthelloGame game;
@@ -66,7 +62,7 @@ public class OthelloScene extends Scene implements Observer {
         Button restart = new Button("Restart");
         restart.setOnAction(e -> new OthelloScene(stage, new OthelloGame(new Othello(), game.getPlayer1(), game.getPlayer2())));
         Button save = new Button("Save");
-        save.setOnAction(e -> chooseFile(stage, true).ifPresent(this::saveOthelloToFile));
+        save.setOnAction(e -> chooseFile(stage, true).ifPresent(file -> saveOthelloToFile(file, game)));
         Button undo = new Button("Undo");
         Button redo = new Button("Redo");
         buttons.getChildren().addAll(home, save, restart, undo, redo);
@@ -162,16 +158,6 @@ public class OthelloScene extends Scene implements Observer {
         status.setText(builder.toString());
         player1Count.setText("Black: " + game.getOthello().getCount(OthelloBoard.P1));
         player2Count.setText("White: " + game.getOthello().getCount(OthelloBoard.P2));
-    }
-
-    private void saveOthelloToFile(File file) {
-        try {
-            FileOutputStream fileOut = new FileOutputStream(file);
-            ObjectOutputStream out = new ObjectOutputStream(fileOut);
-            out.writeObject(game);
-        } catch (IOException e) {
-            System.out.println("Othello game failed to save to file!");
-        }
     }
 
     @Override
