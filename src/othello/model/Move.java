@@ -1,5 +1,7 @@
 package othello.model;
 
+import java.io.Serializable;
+
 /**
  * Represents a Move position
  * containing the initial row and column.
@@ -8,7 +10,7 @@ package othello.model;
  * @author ilir
  *
  */
-public class Move {
+public class Move implements Serializable {
 	final private int row, col;
 
 	/**
