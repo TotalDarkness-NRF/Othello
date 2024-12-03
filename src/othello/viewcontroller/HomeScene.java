@@ -26,7 +26,7 @@ public class HomeScene extends Scene {
     private void createScene(Stage stage) {
         VBox root = new VBox(10);
         root.setAlignment(Pos.CENTER);
-        Scene scene = new Scene(root, 400, 400);
+        Scene scene = new Scene(root, 500, 500);
         Button play = new Button("Play Othello");
         play.setOnAction(_ -> new PlayerSelectScene(stage));
         Button load = new Button("Load Game");

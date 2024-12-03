@@ -24,7 +24,7 @@ public class PlayerSelectScene extends Scene {
     private void createScene(Stage stage) {
         StackPane root = new StackPane();
         root.setAlignment(Pos.CENTER);
-        Scene scene = new Scene(root, 400, 400);
+        Scene scene = new Scene(root, stage.getWidth(), stage.getHeight());
 
         VBox layout = createLayout();
         Button play = new Button("Play");
