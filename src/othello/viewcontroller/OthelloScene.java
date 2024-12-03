@@ -3,6 +3,7 @@ package othello.viewcontroller;
 import othello.model.*;
 import util.Observable;
 import util.Observer;
+import util.OthelloBoardPiecesVisitor;
 import util.OthelloMoveCommand;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -83,35 +84,49 @@ public class OthelloScene extends Scene implements Observer {
         return statusText;
     }
 
-    private GridPane createOthelloBoard() {
-        GridPane grid = new GridPane();
-        double squareSize = 50;
+    private Rectangle createSquare(double size) {
+        Rectangle square = new Rectangle(size, size);
+        square.setFill(Color.GREEN);
+        square.setStroke(Color.BLACK);
+        return square;
+    }
 
+    private Circle createCircle(double size, Color color) {
+        Circle circle = new Circle(size / 2, color);
+        circle.setCenterX(size / 2);
+        circle.setCenterY(size / 4);
+        circle.setScaleX(0.85);
+        circle.setScaleY(0.85);
+        return circle;
+    }
+
+    private StackPane createPiece(double size, char player) {
+        StackPane stackPane = new StackPane();
+        Rectangle square = createSquare(size);
+        Circle circle = createCircle(size, player == OthelloBoard.P1 ? Color.BLACK : Color.WHITE);
+        stackPane.getChildren().addAll(square, circle);
+        return stackPane;
+    }
+
+    private void createOthelloGrid(GridPane grid, OthelloBoardPiecesVisitor visitor, double size) {
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
-                Rectangle square = new Rectangle(squareSize, squareSize);
-                square.setFill(Color.GREEN);
-                square.setStroke(Color.BLACK);
-                char player = getOthello().board.get(row, col);
-                if (player == OthelloBoard.EMPTY) {
-                    grid.add(square, col, row);
-                    final int finalRow = row, finalCol = col;
-                    square.setOnMouseClicked(e -> handleOnSquareClick(finalRow, finalCol));
-                    continue;
-                }
-                Color color = player == OthelloBoard.P1 ? Color.BLACK : Color.WHITE;
-                Circle circle = new Circle(squareSize / 2, color);
-
-                circle.setCenterX(squareSize / 2);
-                circle.setCenterY(squareSize / 4);
-                circle.setScaleX(0.85);
-                circle.setScaleY(0.85);
-
-                StackPane stackPane = new StackPane();
-                stackPane.getChildren().addAll(square, circle);
-                grid.add(stackPane, col, row);
+                if (visitor.getPieces().containsKey(new Move(row, col))) continue;
+                Rectangle square = createSquare(size);
+                final int finalRow = row, finalCol = col;
+                square.setOnMouseClicked(e -> handleOnSquareClick(finalRow, finalCol));
+                grid.add(square, finalCol, finalRow);
             }
         }
+    }
+
+    private GridPane createOthelloBoard() {
+        final double size = 50;
+        GridPane grid = new GridPane();
+        OthelloBoardPiecesVisitor piecesVisitor = new OthelloBoardPiecesVisitor();
+        getOthello().board.accept(piecesVisitor);
+        createOthelloGrid(grid, piecesVisitor, size);
+        piecesVisitor.getPieces().forEach((move, player) -> grid.add(createPiece(size, player), move.getCol(), move.getRow()));
         return grid;
     }
 
