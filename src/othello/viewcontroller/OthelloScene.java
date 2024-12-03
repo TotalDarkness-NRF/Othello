@@ -148,7 +148,7 @@ public class OthelloScene extends Scene implements Observer {
              builder = new StringBuilder("Game Over: ");
             if (game.getOthello().getWinner() == OthelloBoard.EMPTY) builder.append("Draw");
             else if (game.getOthello().getWinner() == OthelloBoard.P1) builder.append("Black wins!");
-            else builder.append("Black wins!");
+            else builder.append("White wins!");
         } else {
             builder = new StringBuilder("Turn: ");
             if (game.getOthello().getWhosTurn() == OthelloBoard.EMPTY) builder.append("None");
