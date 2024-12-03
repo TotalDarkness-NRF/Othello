@@ -1,5 +1,8 @@
 package othello.model;
 
+import util.Element;
+import util.Visitor;
+
 import java.io.Serializable;
 
 /**
@@ -15,7 +18,7 @@ import java.io.Serializable;
  * @author Ilir
  *
  */
-public class OthelloBoard implements Serializable {
+public class OthelloBoard implements Element, Serializable {
 	public static final char EMPTY = ' ', P1 = 'X', P2 = 'O', BOTH = 'B';
 	private final int dim;
 	private final char[][] board;
@@ -393,6 +396,11 @@ public class OthelloBoard implements Serializable {
 		System.out.println("Trying to move to (4,4) move=" + ob.move(4, 4, P2));
 		System.out.println(ob.toString());
 
+	}
+
+	@Override
+	public void accept(Visitor visitor) {
+		visitor.visit(this);
 	}
 }
 
