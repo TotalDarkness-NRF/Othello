@@ -13,9 +13,10 @@ import javafx.stage.Stage;
 
 public class PlayerSelectScene extends Scene {
     Othello othello = new Othello();
-    PlayerContext player1 = new PlayerContext(null), player2 = new PlayerContext(null);
-    final Text player1Text = new Text("Not Selected");
-    final Text player2Text = new Text("Not Selected");
+    PlayerContext player1 = new PlayerContext(new PlayerHumanStrategy(othello, OthelloBoard.P1));
+    PlayerContext player2 = new PlayerContext(new PlayerHumanStrategy(othello, OthelloBoard.P2));
+    final Text player1Text = new Text(String.format("Player 1: %s", player1.getPlayer()));
+    final Text player2Text = new Text(String.format("Player 2: %s", player2.getPlayer()));
 
     public PlayerSelectScene(Stage stage) {
         super(new StackPane());
@@ -52,19 +53,19 @@ public class PlayerSelectScene extends Scene {
         player2Buttons.setAlignment(Pos.CENTER_RIGHT);
 
         Button playerHuman1 = new Button("Player Human");
-        playerHuman1.setOnAction(e -> setPlayer1(new PlayerHumanStrategy(new PlayerHuman(othello, OthelloBoard.P1))));
+        playerHuman1.setOnAction(e -> setPlayer1(new PlayerHumanStrategy(othello, OthelloBoard.P1)));
         Button playerGreedy1 = new Button("Player Greedy");
-        playerGreedy1.setOnAction(e -> setPlayer1(new PlayerGreedyStrategy(new PlayerGreedy(othello, OthelloBoard.P1))));
+        playerGreedy1.setOnAction(e -> setPlayer1(new PlayerGreedyStrategy(othello, OthelloBoard.P1)));
         Button playerRandom1 = new Button("Player Random");
-        playerRandom1.setOnAction(e -> setPlayer1(new PlayerRandomStrategy(new PlayerRandom(othello, OthelloBoard.P1))));
+        playerRandom1.setOnAction(e -> setPlayer1(new PlayerRandomStrategy(othello, OthelloBoard.P1)));
         player1Buttons.getChildren().addAll(playerHuman1, playerGreedy1, playerRandom1, player1Text);
 
         Button playerHuman2 = new Button("Player Human");
-        playerHuman2.setOnAction(e -> setPlayer2(new PlayerHumanStrategy(new PlayerHuman(othello, OthelloBoard.P2))));
+        playerHuman2.setOnAction(e -> setPlayer2(new PlayerHumanStrategy(othello, OthelloBoard.P2)));
         Button playerGreedy2 = new Button("Player Greedy");
-        playerGreedy2.setOnAction(e -> setPlayer2(new PlayerGreedyStrategy(new PlayerGreedy(othello, OthelloBoard.P2))));
+        playerGreedy2.setOnAction(e -> setPlayer2(new PlayerGreedyStrategy(othello, OthelloBoard.P2)));
         Button playerRandom2 = new Button("Player Random");
-        playerRandom2.setOnAction(e -> setPlayer2(new PlayerRandomStrategy(new PlayerRandom(othello, OthelloBoard.P2))));
+        playerRandom2.setOnAction(e -> setPlayer2(new PlayerRandomStrategy(othello, OthelloBoard.P2)));
         player2Buttons.getChildren().addAll(playerHuman2, playerGreedy2, playerRandom2, player2Text);
 
         playerButtons.getChildren().addAll(player1Buttons, player2Buttons);

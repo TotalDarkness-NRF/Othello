@@ -1,13 +1,15 @@
 package util;
 
 import othello.model.Move;
+import othello.model.Othello;
 import othello.model.Player;
+import othello.model.PlayerHuman;
 
 public class PlayerHumanStrategy implements PlayerStrategy {
     private final Player player;
 
-    public PlayerHumanStrategy(Player player) {
-        this.player = player;
+    public PlayerHumanStrategy(Othello othello, char player) {
+        this.player = new PlayerHuman(othello, player);
     }
 
     @Override

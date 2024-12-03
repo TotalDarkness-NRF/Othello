@@ -1,14 +1,12 @@
 package util;
 
-import othello.model.Move;
-import othello.model.Player;
-import othello.model.PlayerRandom;
+import othello.model.*;
 
 public class PlayerRandomStrategy implements PlayerStrategy{
     private final Player player;
 
-    public PlayerRandomStrategy(PlayerRandom player) {
-        this.player = player;
+    public PlayerRandomStrategy(Othello othello, char player) {
+        this.player = new PlayerHuman(othello, player);
     }
 
     @Override
