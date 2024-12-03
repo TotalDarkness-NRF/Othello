@@ -39,7 +39,7 @@ public class OthelloScene extends Scene {
         root.setAlignment(Pos.CENTER);
         othelloGrid.setAlignment(Pos.CENTER);
         Scene scene = new Scene(root, 450, 450);
-        VBox layout = new VBox(1);
+        VBox layout = new VBox(5);
         layout.setAlignment(Pos.CENTER);
         Button home = new Button("Back");
         home.setOnAction(_ -> new PlayerSelectScene(stage));
@@ -59,7 +59,7 @@ public class OthelloScene extends Scene {
     }
 
     private GridPane createOthelloBoard() {
-        GridPane grid = new GridPane(1, 1);
+        GridPane grid = new GridPane();
         double squareSize = 50;
 
         for (int row = 0; row < 8; row++) {
