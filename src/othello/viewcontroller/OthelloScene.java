@@ -147,7 +147,7 @@ public class OthelloScene extends Scene implements Observer {
 
     private boolean hasMove() {
         if (getOthello().isGameOver() || getOthello().getWhosTurn() == OthelloBoard.EMPTY) return false;
-        if (getOthello().getWhosTurn() == OthelloBoard.P1 && game.getPlayer1() instanceof PlayerHuman) return false;
+        if (getOthello().getWhosTurn() == OthelloBoard.P1) return !(game.getPlayer1() instanceof PlayerHuman);
         return !(game.getPlayer2() instanceof PlayerHuman);
     }
 
