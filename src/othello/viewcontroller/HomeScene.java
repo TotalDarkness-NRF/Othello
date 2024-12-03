@@ -9,8 +9,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import static util.FileUtil.chooseFile;
-
-
 public class HomeScene extends Scene {
 
     public HomeScene(Stage stage) {
