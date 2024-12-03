@@ -119,11 +119,10 @@ public class OthelloScene extends Scene {
             else if (othello.getWinner() == OthelloBoard.P1) builder.append("Black wins!");
             else builder.append("Black wins!");
         } else {
-            builder = new StringBuilder();
-            if (othello.getWhosTurn() == OthelloBoard.EMPTY) builder.append("No Players");
-            else if (othello.getWinner() == OthelloBoard.P1) builder.append("Blacks");
-            else builder.append("Whites");
-            builder.append(" turn");
+            builder = new StringBuilder("Turn: ");
+            if (othello.getWhosTurn() == OthelloBoard.EMPTY) builder.append("None");
+            else if (othello.getWhosTurn() == OthelloBoard.P1) builder.append("Black");
+            else builder.append("White");
         }
         status.setText(builder.toString());
         player1Count.setText("Black: " + othello.getCount(OthelloBoard.P1));
