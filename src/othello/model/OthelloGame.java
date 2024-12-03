@@ -21,6 +21,8 @@ public final class OthelloGame implements Serializable {
 
     public void setOthello(Othello othello) {
         this.othello = othello;
+        player1.othello = othello;
+        player2.othello = othello;
     }
 
     public Player getPlayer1() {
