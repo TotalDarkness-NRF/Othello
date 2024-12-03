@@ -27,9 +27,9 @@ Features:
     Done: Restart game button
     Done: GUI to allow choice of different player types
     Done: Design pattern: strategy for which player
+    Done: Undo/redo move: Command design pattern + game history
+    Done: Undo move button
     Visitor for OthelloBoard+rewrite of lots of Othello and OthelloBoard
-    Undo/redo move: Command design pattern + game history
-    Undo move button
 	 */
 
 	@Override
