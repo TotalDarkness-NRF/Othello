@@ -26,19 +26,16 @@ import java.io.ObjectOutputStream;
 import static util.Util.chooseFile;
 
 public class OthelloScene extends Scene implements Observer {
-    final Othello othello;
-    final Player player1, player2;
+    final OthelloGame game;
     final GridPane othelloGrid;
     final Text status = new Text();
     final Text player1Count = new Text();
     final Text player2Count = new Text();
 
-    public OthelloScene(Stage stage, Othello othello, Player player1, Player player2) {
+    public OthelloScene(Stage stage, OthelloGame game) {
         super(new StackPane());
-        this.othello = othello;
-        this.othello.attach(this);
-        this.player1 = player1;
-        this.player2 = player2;
+        this.game = game;
+        game.getOthello().attach(this);
         this.othelloGrid = createOthelloBoard();
         createScene(stage);
     }
@@ -53,7 +50,7 @@ public class OthelloScene extends Scene implements Observer {
         Button home = new Button("Back");
         home.setOnAction(_ -> new PlayerSelectScene(stage));
         Button restart = new Button("Restart");
-        restart.setOnAction(_ -> new OthelloScene(stage, new Othello(), player1, player2));
+        restart.setOnAction(_ -> new OthelloScene(stage, new OthelloGame(new Othello(), game.getPlayer1(), game.getPlayer2())));
         Button save = new Button("Save");
         save.setOnAction(_ -> chooseFile(stage, true).ifPresent(this::saveOthelloToFile));
         Button undo = new Button("Undo");
@@ -84,7 +81,7 @@ public class OthelloScene extends Scene implements Observer {
                 Rectangle square = new Rectangle(squareSize, squareSize);
                 square.setFill(Color.GREEN);
                 square.setStroke(Color.BLACK);
-                char player = othello.board.get(row, col);
+                char player = game.getOthello().board.get(row, col);
                 if (player == OthelloBoard.EMPTY) {
                     grid.add(square, col, row);
                     final int finalRow = row, finalCol = col;
@@ -111,10 +108,10 @@ public class OthelloScene extends Scene implements Observer {
         Platform.runLater(() -> {
             if (!getMove()) return;
             Move move;
-            if (othello.getWhosTurn() == OthelloBoard.P1) move = player1.getMove();
-            else move = player2.getMove();
-            othello.move(move.getRow(), move.getCol());
-            if (!(player1 instanceof PlayerHuman || player2 instanceof PlayerHuman)) {
+            if (game.getOthello().getWhosTurn() == OthelloBoard.P1) move = game.getPlayer1().getMove();
+            else move = game.getPlayer2().getMove();
+            game.getOthello().move(move.getRow(), move.getCol());
+            if (!(game.getPlayer1() instanceof PlayerHuman || game.getPlayer2() instanceof PlayerHuman)) {
                 long startTime = System.currentTimeMillis();
                 while (System.currentTimeMillis() - startTime < 200);
             }
@@ -122,13 +119,13 @@ public class OthelloScene extends Scene implements Observer {
     }
 
     private boolean getMove() {
-        if (othello.isGameOver() || othello.getWhosTurn() == OthelloBoard.EMPTY) return false;
-        if (othello.getWhosTurn() == OthelloBoard.P1 && player1 instanceof PlayerHuman) return false;
-        return !(player2 instanceof PlayerHuman);
+        if (game.getOthello().isGameOver() || game.getOthello().getWhosTurn() == OthelloBoard.EMPTY) return false;
+        if (game.getOthello().getWhosTurn() == OthelloBoard.P1 && game.getPlayer1() instanceof PlayerHuman) return false;
+        return !(game.getPlayer2() instanceof PlayerHuman);
     }
 
     private void handleOnSquareClick(int row, int col) {
-        othello.move(row, col);
+        game.getOthello().move(row, col);
     }
 
     private void updateBoard() {
@@ -139,27 +136,27 @@ public class OthelloScene extends Scene implements Observer {
 
     private void updateText() {
         StringBuilder builder;
-        if (othello.isGameOver()) {
+        if (game.getOthello().isGameOver()) {
              builder = new StringBuilder("Game Over: ");
-            if (othello.getWinner() == OthelloBoard.EMPTY) builder.append("Draw");
-            else if (othello.getWinner() == OthelloBoard.P1) builder.append("Black wins!");
+            if (game.getOthello().getWinner() == OthelloBoard.EMPTY) builder.append("Draw");
+            else if (game.getOthello().getWinner() == OthelloBoard.P1) builder.append("Black wins!");
             else builder.append("Black wins!");
         } else {
             builder = new StringBuilder("Turn: ");
-            if (othello.getWhosTurn() == OthelloBoard.EMPTY) builder.append("None");
-            else if (othello.getWhosTurn() == OthelloBoard.P1) builder.append("Black");
+            if (game.getOthello().getWhosTurn() == OthelloBoard.EMPTY) builder.append("None");
+            else if (game.getOthello().getWhosTurn() == OthelloBoard.P1) builder.append("Black");
             else builder.append("White");
         }
         status.setText(builder.toString());
-        player1Count.setText("Black: " + othello.getCount(OthelloBoard.P1));
-        player2Count.setText("White: " + othello.getCount(OthelloBoard.P2));
+        player1Count.setText("Black: " + game.getOthello().getCount(OthelloBoard.P1));
+        player2Count.setText("White: " + game.getOthello().getCount(OthelloBoard.P2));
     }
 
     private void saveOthelloToFile(File file) {
         try {
             FileOutputStream fileOut = new FileOutputStream(file);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
-            out.writeObject(new OthelloGame(othello, player1, player2));
+            out.writeObject(game);
         } catch (IOException e) {
             System.out.println("Othello game failed to save to file!");
         }

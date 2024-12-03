@@ -41,7 +41,7 @@ public class HomeScene extends Scene {
     private void loadOthelloGame(Stage stage) {
         chooseFile(stage, false)
                 .flatMap(this::loadOthelloFile)
-                .ifPresent(game -> new OthelloScene(stage, game.getOthello(), game.getPlayer1(), game.getPlayer2()));
+                .ifPresent(game -> new OthelloScene(stage, game));
     }
 
     private Optional<OthelloGame> loadOthelloFile(File file) {
