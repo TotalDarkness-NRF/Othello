@@ -1,6 +1,9 @@
 package othello.viewcontroller;
 
 import othello.model.*;
+import util.Observable;
+import util.Observer;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -22,7 +25,7 @@ import java.io.ObjectOutputStream;
 
 import static util.Util.chooseFile;
 
-public class OthelloScene extends Scene {
+public class OthelloScene extends Scene implements Observer {
     final Othello othello;
     final Player player1, player2;
     final GridPane othelloGrid;
@@ -33,6 +36,7 @@ public class OthelloScene extends Scene {
     public OthelloScene(Stage stage, Othello othello, Player player1, Player player2) {
         super(new StackPane());
         this.othello = othello;
+        this.othello.attach(this);
         this.player1 = player1;
         this.player2 = player2;
         this.othelloGrid = createOthelloBoard();
@@ -68,6 +72,7 @@ public class OthelloScene extends Scene {
         root.getChildren().add(layout);
         stage.setTitle("Othello");
         stage.setScene(scene);
+        getNextMove();
     }
 
     private GridPane createOthelloBoard() {
@@ -102,13 +107,34 @@ public class OthelloScene extends Scene {
         return grid;
     }
 
+    private void getNextMove() {
+        Platform.runLater(() -> {
+            if (!getMove()) return;
+            Move move;
+            if (othello.getWhosTurn() == OthelloBoard.P1) move = player1.getMove();
+            else move = player2.getMove();
+            othello.move(move.getRow(), move.getCol());
+            if (!(player1 instanceof PlayerHuman || player2 instanceof PlayerHuman)) {
+                long startTime = System.currentTimeMillis();
+                while (System.currentTimeMillis() - startTime < 200);
+            }
+        });
+    }
+
+    private boolean getMove() {
+        if (othello.isGameOver() || othello.getWhosTurn() == OthelloBoard.EMPTY) return false;
+        if (othello.getWhosTurn() == OthelloBoard.P1 && player1 instanceof PlayerHuman) return false;
+        return !(player2 instanceof PlayerHuman);
+    }
+
     private void handleOnSquareClick(int row, int col) {
-        if (othello.move(row, col)) updateBoard();
+        othello.move(row, col);
     }
 
     private void updateBoard() {
         othelloGrid.getChildren().setAll(createOthelloBoard().getChildren());
         updateText();
+        getNextMove();
     }
 
     private void updateText() {
@@ -137,5 +163,10 @@ public class OthelloScene extends Scene {
         } catch (IOException e) {
             System.out.println("Othello game failed to save to file!");
         }
+    }
+
+    @Override
+    public void update(Observable o) {
+        updateBoard();
     }
 }

@@ -1,5 +1,7 @@
 package othello.model;
 
+import util.Observable;
+
 import java.io.Serializable;
 import java.util.Random;
 
@@ -16,7 +18,7 @@ import java.util.Random;
  *
  *
  */
-public class Othello implements Serializable {
+public class Othello extends Observable implements Serializable {
 	public static final int DIMENSION = 8;
 	private char whosTurn = OthelloBoard.P1;
 	private int numMoves = 0;
@@ -50,11 +52,12 @@ public class Othello implements Serializable {
 	 */
 	public boolean move(int row, int col) {
 		if (board.move(row, col, getWhosTurn())) {
-			numMoves++;
 			char hasMove = board.hasMove();
 			if (hasMove == OthelloBoard.BOTH) {
 				whosTurn = OthelloBoard.otherPlayer(getWhosTurn());
 			} else whosTurn = hasMove;
+			numMoves++;
+			notifyObservers();
 			return true;
 		}
 		return false;

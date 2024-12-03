@@ -22,14 +22,14 @@ Features:
     MVC architecture
     Create GUI for Human VS Human - board of buttons with images
     Design pattern: strategy for which player
-    Allow choice of opponents: GUI
+    Done: Allow choice of opponents: GUI
     Visitor for OthelloBoard+rewrite of lots of Othello and OthelloBoard
     Undo/redo move: Command design pattern + game history
-    Saving game to file
-    Load game from file
-    Restart game button
+    Done: Saving game to file
+    Done: Load game from file
+    Done: Restart game button
     Undo move button
-    GUI to allow choice of different player types
+    Done: GUI to allow choice of different player types
 	 */
 
 	@Override
