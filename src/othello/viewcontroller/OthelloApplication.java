@@ -20,16 +20,16 @@ Marking:	Marks will be given for
 Features:
 
     MVC architecture
-    Create GUI for Human VS Human - board of buttons with images
-    Design pattern: strategy for which player
+    Done: Create GUI for Human VS Human - board of buttons with images
     Done: Allow choice of opponents: GUI
-    Visitor for OthelloBoard+rewrite of lots of Othello and OthelloBoard
-    Undo/redo move: Command design pattern + game history
     Done: Saving game to file
     Done: Load game from file
     Done: Restart game button
-    Undo move button
     Done: GUI to allow choice of different player types
+    Design pattern: strategy for which player
+    Visitor for OthelloBoard+rewrite of lots of Othello and OthelloBoard
+    Undo/redo move: Command design pattern + game history
+    Undo move button
 	 */
 
 	@Override

@@ -28,11 +28,11 @@ public class HomeScene extends Scene {
         root.setAlignment(Pos.CENTER);
         Scene scene = new Scene(root, 500, 500);
         Button play = new Button("Play Othello");
-        play.setOnAction(_ -> new PlayerSelectScene(stage));
+        play.setOnAction(e -> new PlayerSelectScene(stage));
         Button load = new Button("Load Game");
-        load.setOnAction(_ -> loadOthelloGame(stage));
+        load.setOnAction(e -> loadOthelloGame(stage));
         Button exit = new Button("Exit");
-        exit.setOnAction(_ -> stage.close());
+        exit.setOnAction(e -> stage.close());
         root.getChildren().addAll(play, load, exit);
         stage.setTitle("Home Othello");
         stage.setScene(scene);

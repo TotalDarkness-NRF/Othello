@@ -62,11 +62,11 @@ public class OthelloScene extends Scene implements Observer {
         HBox buttons = new HBox(10);
         buttons.setAlignment(Pos.CENTER);
         Button home = new Button("Back");
-        home.setOnAction(_ -> new PlayerSelectScene(stage));
+        home.setOnAction(e -> new PlayerSelectScene(stage));
         Button restart = new Button("Restart");
-        restart.setOnAction(_ -> new OthelloScene(stage, new OthelloGame(new Othello(), game.getPlayer1(), game.getPlayer2())));
+        restart.setOnAction(e -> new OthelloScene(stage, new OthelloGame(new Othello(), game.getPlayer1(), game.getPlayer2())));
         Button save = new Button("Save");
-        save.setOnAction(_ -> chooseFile(stage, true).ifPresent(this::saveOthelloToFile));
+        save.setOnAction(e -> chooseFile(stage, true).ifPresent(this::saveOthelloToFile));
         Button undo = new Button("Undo");
         Button redo = new Button("Redo");
         buttons.getChildren().addAll(home, save, restart, undo, redo);
@@ -97,7 +97,7 @@ public class OthelloScene extends Scene implements Observer {
                 if (player == OthelloBoard.EMPTY) {
                     grid.add(square, col, row);
                     final int finalRow = row, finalCol = col;
-                    square.setOnMouseClicked(_ -> handleOnSquareClick(finalRow, finalCol));
+                    square.setOnMouseClicked(e -> handleOnSquareClick(finalRow, finalCol));
                     continue;
                 }
                 Color color = player == OthelloBoard.P1 ? Color.BLACK : Color.WHITE;
