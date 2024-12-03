@@ -11,6 +11,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -24,6 +26,9 @@ public class OthelloScene extends Scene {
     final Othello othello;
     final Player player1, player2;
     final GridPane othelloGrid;
+    final Text status = new Text();
+    final Text player1Count = new Text();
+    final Text player2Count = new Text();
 
     public OthelloScene(Stage stage, Othello othello, Player player1, Player player2) {
         super(new StackPane());
@@ -38,7 +43,7 @@ public class OthelloScene extends Scene {
         StackPane root = new StackPane();
         root.setAlignment(Pos.CENTER);
         othelloGrid.setAlignment(Pos.CENTER);
-        Scene scene = new Scene(root, 450, 450);
+        Scene scene = new Scene(root, stage.getWidth(), stage.getHeight());
         VBox layout = new VBox(5);
         layout.setAlignment(Pos.CENTER);
         Button home = new Button("Back");
@@ -51,8 +56,15 @@ public class OthelloScene extends Scene {
         Button redo = new Button("Redo");
         HBox buttons = new HBox(10);
         buttons.setAlignment(Pos.CENTER);
+        HBox statusText = new HBox(10);
+        updateText();
+        statusText.getChildren().addAll(player1Count, status, player2Count);
+        statusText.setAlignment(Pos.CENTER);
+        player1Count.setTextAlignment(TextAlignment.LEFT);
+        status.setTextAlignment(TextAlignment.CENTER);
+        player2Count.setTextAlignment(TextAlignment.RIGHT);
         buttons.getChildren().addAll(home, save, restart, undo, redo);
-        layout.getChildren().addAll(othelloGrid, buttons);
+        layout.getChildren().addAll(statusText, othelloGrid, buttons);
         root.getChildren().add(layout);
         stage.setTitle("Othello");
         stage.setScene(scene);
@@ -96,6 +108,26 @@ public class OthelloScene extends Scene {
 
     private void updateBoard() {
         othelloGrid.getChildren().setAll(createOthelloBoard().getChildren());
+        updateText();
+    }
+
+    private void updateText() {
+        StringBuilder builder;
+        if (othello.isGameOver()) {
+             builder = new StringBuilder("Game Over: ");
+            if (othello.getWinner() == OthelloBoard.EMPTY) builder.append("Draw");
+            else if (othello.getWinner() == OthelloBoard.P1) builder.append("Black wins!");
+            else builder.append("Black wins!");
+        } else {
+            builder = new StringBuilder();
+            if (othello.getWhosTurn() == OthelloBoard.EMPTY) builder.append("No Players");
+            else if (othello.getWinner() == OthelloBoard.P1) builder.append("Blacks");
+            else builder.append("Whites");
+            builder.append(" turn");
+        }
+        status.setText(builder.toString());
+        player1Count.setText("Black: " + othello.getCount(OthelloBoard.P1));
+        player2Count.setText("White: " + othello.getCount(OthelloBoard.P2));
     }
 
     private void saveOthelloToFile(File file) {
