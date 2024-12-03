@@ -43,10 +43,24 @@ public class OthelloScene extends Scene implements Observer {
     private void createScene(Stage stage) {
         StackPane root = new StackPane();
         root.setAlignment(Pos.CENTER);
-        othelloGrid.setAlignment(Pos.CENTER);
         Scene scene = new Scene(root, stage.getWidth(), stage.getHeight());
+        root.getChildren().add(createLayout(stage));
+        stage.setTitle("Othello");
+        stage.setScene(scene);
+        getNextMove();
+    }
+
+    private VBox createLayout(Stage stage) {
         VBox layout = new VBox(5);
         layout.setAlignment(Pos.CENTER);
+        othelloGrid.setAlignment(Pos.CENTER);
+        layout.getChildren().addAll(createStatusText(), othelloGrid, createButtons(stage));
+        return layout;
+    }
+
+    private HBox createButtons(Stage stage) {
+        HBox buttons = new HBox(10);
+        buttons.setAlignment(Pos.CENTER);
         Button home = new Button("Back");
         home.setOnAction(_ -> new PlayerSelectScene(stage));
         Button restart = new Button("Restart");
@@ -55,21 +69,19 @@ public class OthelloScene extends Scene implements Observer {
         save.setOnAction(_ -> chooseFile(stage, true).ifPresent(this::saveOthelloToFile));
         Button undo = new Button("Undo");
         Button redo = new Button("Redo");
-        HBox buttons = new HBox(10);
-        buttons.setAlignment(Pos.CENTER);
+        buttons.getChildren().addAll(home, save, restart, undo, redo);
+        return buttons;
+    }
+
+    private HBox createStatusText() {
         HBox statusText = new HBox(10);
         updateText();
-        statusText.getChildren().addAll(player1Count, status, player2Count);
         statusText.setAlignment(Pos.CENTER);
         player1Count.setTextAlignment(TextAlignment.LEFT);
         status.setTextAlignment(TextAlignment.CENTER);
         player2Count.setTextAlignment(TextAlignment.RIGHT);
-        buttons.getChildren().addAll(home, save, restart, undo, redo);
-        layout.getChildren().addAll(statusText, othelloGrid, buttons);
-        root.getChildren().add(layout);
-        stage.setTitle("Othello");
-        stage.setScene(scene);
-        getNextMove();
+        statusText.getChildren().addAll(player1Count, status, player2Count);
+        return statusText;
     }
 
     private GridPane createOthelloBoard() {
