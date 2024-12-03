@@ -3,6 +3,7 @@ package othello.viewcontroller;
 import othello.model.*;
 import util.Observable;
 import util.Observer;
+import util.OthelloMoveCommand;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -31,7 +32,7 @@ public class OthelloScene extends Scene implements Observer {
     public OthelloScene(Stage stage, OthelloGame game) {
         super(new StackPane());
         this.game = game;
-        game.getOthello().attach(this);
+        getOthello().attach(this);
         this.othelloGrid = createOthelloBoard();
         createScene(stage);
     }
@@ -64,7 +65,9 @@ public class OthelloScene extends Scene implements Observer {
         Button save = new Button("Save");
         save.setOnAction(e -> chooseFile(stage, true).ifPresent(file -> saveOthelloToFile(file, game)));
         Button undo = new Button("Undo");
+        undo.setOnAction(e -> undo());
         Button redo = new Button("Redo");
+        redo.setOnAction(e -> redo());
         buttons.getChildren().addAll(home, save, restart, undo, redo);
         return buttons;
     }
@@ -89,7 +92,7 @@ public class OthelloScene extends Scene implements Observer {
                 Rectangle square = new Rectangle(squareSize, squareSize);
                 square.setFill(Color.GREEN);
                 square.setStroke(Color.BLACK);
-                char player = game.getOthello().board.get(row, col);
+                char player = getOthello().board.get(row, col);
                 if (player == OthelloBoard.EMPTY) {
                     grid.add(square, col, row);
                     final int finalRow = row, finalCol = col;
@@ -114,11 +117,11 @@ public class OthelloScene extends Scene implements Observer {
 
     private void getNextMove() {
         Platform.runLater(() -> {
-            if (!getMove()) return;
+            if (!hasMove()) return;
             Move move;
-            if (game.getOthello().getWhosTurn() == OthelloBoard.P1) move = game.getPlayer1().getMove();
+            if (getOthello().getWhosTurn() == OthelloBoard.P1) move = game.getPlayer1().getMove();
             else move = game.getPlayer2().getMove();
-            game.getOthello().move(move.getRow(), move.getCol());
+            move(move);
             if (!(game.getPlayer1() instanceof PlayerHuman || game.getPlayer2() instanceof PlayerHuman)) {
                 long startTime = System.currentTimeMillis();
                 while (System.currentTimeMillis() - startTime < 200);
@@ -126,38 +129,60 @@ public class OthelloScene extends Scene implements Observer {
         });
     }
 
-    private boolean getMove() {
-        if (game.getOthello().isGameOver() || game.getOthello().getWhosTurn() == OthelloBoard.EMPTY) return false;
-        if (game.getOthello().getWhosTurn() == OthelloBoard.P1 && game.getPlayer1() instanceof PlayerHuman) return false;
+    private boolean hasMove() {
+        if (getOthello().isGameOver() || getOthello().getWhosTurn() == OthelloBoard.EMPTY) return false;
+        if (getOthello().getWhosTurn() == OthelloBoard.P1 && game.getPlayer1() instanceof PlayerHuman) return false;
         return !(game.getPlayer2() instanceof PlayerHuman);
     }
 
+    private void move(Move move) {
+        if (!getOthello().copy().move(move.getRow(), move.getCol())) return;
+        game.getCommandManager().executeCommand(new OthelloMoveCommand(move, getOthello()));
+        updateBoard();
+    }
+
+    private void undo() {
+        game.getCommandManager().undo();
+        updateBoard();
+    }
+
+    private void redo() {
+        game.getCommandManager().redo();
+        updateBoard();
+    }
+
     private void handleOnSquareClick(int row, int col) {
-        game.getOthello().move(row, col);
+        move(new Move(row, col));
     }
 
     private void updateBoard() {
+        game.setOthello(getOthello());
         othelloGrid.getChildren().setAll(createOthelloBoard().getChildren());
         updateText();
         getNextMove();
     }
 
+    private Othello getOthello() {
+        Othello lastOthello = game.getCommandManager().getOthello();
+        return lastOthello == null ? game.getOthello() : lastOthello;
+    }
+
     private void updateText() {
         StringBuilder builder;
-        if (game.getOthello().isGameOver()) {
+        if (getOthello().isGameOver()) {
              builder = new StringBuilder("Game Over: ");
-            if (game.getOthello().getWinner() == OthelloBoard.EMPTY) builder.append("Draw");
-            else if (game.getOthello().getWinner() == OthelloBoard.P1) builder.append("Black wins!");
+            if (getOthello().getWinner() == OthelloBoard.EMPTY) builder.append("Draw");
+            else if (getOthello().getWinner() == OthelloBoard.P1) builder.append("Black wins!");
             else builder.append("White wins!");
         } else {
             builder = new StringBuilder("Turn: ");
-            if (game.getOthello().getWhosTurn() == OthelloBoard.EMPTY) builder.append("None");
-            else if (game.getOthello().getWhosTurn() == OthelloBoard.P1) builder.append("Black");
+            if (getOthello().getWhosTurn() == OthelloBoard.EMPTY) builder.append("None");
+            else if (getOthello().getWhosTurn() == OthelloBoard.P1) builder.append("Black");
             else builder.append("White");
         }
         status.setText(builder.toString());
-        player1Count.setText("Black: " + game.getOthello().getCount(OthelloBoard.P1));
-        player2Count.setText("White: " + game.getOthello().getCount(OthelloBoard.P2));
+        player1Count.setText("Black: " + getOthello().getCount(OthelloBoard.P1));
+        player2Count.setText("White: " + getOthello().getCount(OthelloBoard.P2));
     }
 
     @Override
