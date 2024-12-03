@@ -10,10 +10,14 @@ public class OthelloMoveCommandManager implements Serializable {
     private final Stack<OthelloMoveCommand> undoStack = new Stack<>();
     private final Stack<OthelloMoveCommand> redoStack = new Stack<>();
 
+    public OthelloMoveCommandManager(Othello othello) {
+        this.othello = othello;
+    }
+
     public void executeCommand(OthelloMoveCommand command) {
         command.execute();
         undoStack.push(command);
-        othello = command.othello.copy();
+        setOthello(command.othello.copy());
         redoStack.clear();
     }
 
@@ -21,7 +25,7 @@ public class OthelloMoveCommandManager implements Serializable {
         if (undoStack.isEmpty()) return;
         OthelloMoveCommand command = undoStack.pop();
         command.undo();
-        othello = command.othello.copy();
+        setOthello(command.othello.copy());
         redoStack.push(command);
     }
 
@@ -29,11 +33,15 @@ public class OthelloMoveCommandManager implements Serializable {
         if (redoStack.isEmpty()) return;
         OthelloMoveCommand command = redoStack.pop();
         command.execute();
-        othello = command.othello.copy();
+        setOthello(command.othello.copy());
         undoStack.push(command);
     }
 
     public Othello getOthello() {
         return othello;
+    }
+
+    public void setOthello(Othello othello) {
+        this.othello = othello;
     }
 }
