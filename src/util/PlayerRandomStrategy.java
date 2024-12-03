@@ -6,7 +6,7 @@ public class PlayerRandomStrategy implements PlayerStrategy{
     private final Player player;
 
     public PlayerRandomStrategy(Othello othello, char player) {
-        this.player = new PlayerHuman(othello, player);
+        this.player = new PlayerRandom(othello, player);
     }
 
     @Override
