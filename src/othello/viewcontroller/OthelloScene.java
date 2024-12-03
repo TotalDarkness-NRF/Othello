@@ -1,10 +1,7 @@
 package othello.viewcontroller;
 
 import othello.model.*;
-import util.Observable;
-import util.Observer;
-import util.OthelloBoardPiecesVisitor;
-import util.OthelloMoveCommand;
+import util.*;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -33,9 +30,13 @@ public class OthelloScene extends Scene implements Observer {
     public OthelloScene(Stage stage, OthelloGame game) {
         super(new StackPane());
         this.game = game;
-        getOthello().attach(this);
         this.othelloGrid = createOthelloBoard();
         createScene(stage);
+    }
+
+    private void createNewGame() {
+        game.restartGame();
+        updateBoard();
     }
 
     private void createScene(Stage stage) {
@@ -62,7 +63,7 @@ public class OthelloScene extends Scene implements Observer {
         Button home = new Button("Back");
         home.setOnAction(e -> new PlayerSelectScene(stage));
         Button restart = new Button("Restart");
-        restart.setOnAction(e -> new OthelloScene(stage, new OthelloGame(new Othello(), game.getPlayer1(), game.getPlayer2())));
+        restart.setOnAction(e -> createNewGame());
         Button save = new Button("Save");
         save.setOnAction(e -> chooseFile(stage, true).ifPresent(file -> saveOthelloToFile(file, game)));
         Button undo = new Button("Undo");
@@ -152,8 +153,9 @@ public class OthelloScene extends Scene implements Observer {
 
     private void move(Move move) {
         if (!getOthello().copy().move(move.getRow(), move.getCol())) return;
+        getOthello().attach(this);
         game.getCommandManager().executeCommand(new OthelloMoveCommand(move, getOthello()));
-        updateBoard();
+        getOthello().detach(this);
     }
 
     private void undo() {
@@ -178,8 +180,7 @@ public class OthelloScene extends Scene implements Observer {
     }
 
     private Othello getOthello() {
-        Othello lastOthello = game.getCommandManager().getOthello();
-        return lastOthello == null ? game.getOthello() : lastOthello;
+        return game.getOthello();
     }
 
     private void updateText() {
@@ -196,8 +197,10 @@ public class OthelloScene extends Scene implements Observer {
             else builder.append("White");
         }
         status.setText(builder.toString());
-        player1Count.setText("Black: " + getOthello().getCount(OthelloBoard.P1));
-        player2Count.setText("White: " + getOthello().getCount(OthelloBoard.P2));
+        OthelloBoardCountVisitor countVisitor = new OthelloBoardCountVisitor();
+        countVisitor.visit(getOthello().board);
+        player1Count.setText("Black: " + countVisitor.getPlayer1Count());
+        player2Count.setText("White: " + countVisitor.getPlayer2Count());
     }
 
     @Override
