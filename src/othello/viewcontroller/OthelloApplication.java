@@ -29,7 +29,8 @@ Features:
     Done: Design pattern: strategy for which player
     Done: Undo/redo move: Command design pattern + game history
     Done: Undo move button
-    Visitor for OthelloBoard+rewrite of lots of Othello and OthelloBoard
+    Done: Visitor for OthelloBoard+rewrite of lots of Othello and OthelloBoard
+    Documentation
 	 */
 
 	@Override
