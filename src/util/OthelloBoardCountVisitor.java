@@ -2,6 +2,10 @@ package util;
 
 import othello.model.OthelloBoard;
 
+/**
+ * Implements the visitor design pattern for OthelloBoards to
+ * get the number of pieces for each player on the board.
+ */
 public class OthelloBoardCountVisitor implements Visitor {
     int player1Count, player2Count;
     @Override

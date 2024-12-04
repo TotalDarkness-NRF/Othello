@@ -9,6 +9,13 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import static util.FileUtil.chooseFile;
+
+/**
+ * A HomeScene that sets the HomeScene of the OthelloApplication.
+ * It contains a Play Othello button to open a PlayerSelectScene,
+ * a LoadGame button to load an othello game and an exit button to
+ * exit the OthelloApplication.
+ */
 public class HomeScene extends Scene {
 
     public HomeScene(Stage stage) {
@@ -16,6 +23,10 @@ public class HomeScene extends Scene {
         createScene(stage);
     }
 
+    /**
+     * Creates the scene and sets the scene to the provided stage.
+     * @param stage The stage to control
+     */
     private void createScene(Stage stage) {
         VBox root = new VBox(10);
         root.setAlignment(Pos.CENTER);
@@ -31,6 +42,11 @@ public class HomeScene extends Scene {
         stage.setScene(scene);
     }
 
+    /**
+     * Load the Othello game and open an OthelloScene to
+     * show the othello game scene.
+     * @param stage The stage to control
+     */
     private void loadOthelloGame(Stage stage) {
         chooseFile(stage, false)
                 .flatMap(FileUtil::loadOthelloFile)

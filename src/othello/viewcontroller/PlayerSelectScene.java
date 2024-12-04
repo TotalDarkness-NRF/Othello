@@ -11,6 +11,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+/**
+ * A PlayerSelectScene that sets the PlayerSelectScene for the OthelloApplication.
+ * It contains buttons to select the player strategies for both player1 and player2. The player
+ * strategies include a PlayerHuman, a PlayerGreedy, and a PlayerRandom.
+ *
+ */
 public class PlayerSelectScene extends Scene {
     Othello othello = new Othello();
     PlayerContext player1 = new PlayerContext(new PlayerHumanStrategy(othello, OthelloBoard.P1));
@@ -23,6 +29,10 @@ public class PlayerSelectScene extends Scene {
         createScene(stage);
     }
 
+    /**
+     * Creates the scene and sets the scene to the provided stage.
+     * @param stage The stage to control
+     */
     private void createScene(Stage stage) {
         StackPane root = new StackPane();
         root.setAlignment(Pos.CENTER);
@@ -41,8 +51,12 @@ public class PlayerSelectScene extends Scene {
         stage.setScene(scene);
     }
 
+    /**
+     * Creates the scenes layout and position everything correctly
+     * and in order.
+     * @return A Vertical Box with the layout aligned correctly and in order.
+     */
     private VBox createLayout() {
-        // TODO use strategy design pattern
         VBox layout = new VBox(10);
         layout.setAlignment(Pos.CENTER);
         HBox playerButtons = new HBox(20);
@@ -74,6 +88,11 @@ public class PlayerSelectScene extends Scene {
         return layout;
     }
 
+    /**
+     * Switches to the OthelloScene to start playing the game if both players
+     * have selected a player.
+     * @param stage The stage to control.
+     */
     private void switchToPlayScene(Stage stage) {
         if (player1 == null || player2 == null) return;
         new OthelloScene(stage, new OthelloGame(othello, player1.getPlayer(), player2.getPlayer()));

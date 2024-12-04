@@ -5,6 +5,10 @@ import othello.model.Othello;
 
 import java.io.Serializable;
 
+/**
+ * Implements the command design pattern for Othello to
+ * execute and undo moves.
+ */
 public class OthelloMoveCommand implements Command, Serializable {
     final Move move;
     Othello othello;

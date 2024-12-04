@@ -3,6 +3,10 @@ package util;
 import othello.model.Move;
 import othello.model.Player;
 
+/**
+ * A Player Context for the strategy design pattern to
+ * keep the context of what Player Strategy is being used.
+ */
 public class PlayerContext {
     private PlayerStrategy strategy;
 

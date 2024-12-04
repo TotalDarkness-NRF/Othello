@@ -5,6 +5,9 @@ import othello.model.Othello;
 import othello.model.Player;
 import othello.model.PlayerHuman;
 
+/**
+ * Implements the strategy design pattern for Player Human
+ */
 public class PlayerHumanStrategy implements PlayerStrategy {
     private final Player player;
 

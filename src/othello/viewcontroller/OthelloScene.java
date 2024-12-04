@@ -20,6 +20,11 @@ import javafx.stage.Stage;
 import static util.FileUtil.chooseFile;
 import static util.FileUtil.saveOthelloToFile;
 
+/**
+ * An OthelloScene that sets the OthelloScene for the OthelloApplication.
+ * It contains game information, the drawn Othello board and various buttons
+ * with various functions.
+ */
 public class OthelloScene extends Scene implements Observer {
     final OthelloGame game;
     final GridPane othelloGrid;
@@ -34,11 +39,18 @@ public class OthelloScene extends Scene implements Observer {
         createScene(stage);
     }
 
+    /**
+     * Create a new game and update the board being drawn.
+     */
     private void createNewGame() {
         game.restartGame();
         updateBoard();
     }
 
+    /**
+     * Creates the scene and sets the scene to the provided stage.
+     * @param stage The stage to control
+     */
     private void createScene(Stage stage) {
         StackPane root = new StackPane();
         root.setAlignment(Pos.CENTER);
@@ -49,6 +61,12 @@ public class OthelloScene extends Scene implements Observer {
         getNextMove();
     }
 
+    /**
+     * Creates the scenes layout and position everything correctly
+     * and in order.
+     * @param stage The stage to control
+     * @return A Vertical Box with the layout aligned correctly and in order.
+     */
     private VBox createLayout(Stage stage) {
         VBox layout = new VBox(5);
         layout.setAlignment(Pos.CENTER);
@@ -57,6 +75,14 @@ public class OthelloScene extends Scene implements Observer {
         return layout;
     }
 
+    /**
+     * Creates the buttons with various functions.
+     * These buttons include a back button to get back to the PlayerSelectScene,
+     * a restart button to restart the game, a save button to save the game to a file,
+     * an undo button to undo the most recent move, and a redo button to redo an undone move.
+     * @param stage The stage to control
+     * @return A Horizontal Box with the buttons aligned correctly and in order.
+     */
     private HBox createButtons(Stage stage) {
         HBox buttons = new HBox(10);
         buttons.setAlignment(Pos.CENTER);
@@ -74,6 +100,12 @@ public class OthelloScene extends Scene implements Observer {
         return buttons;
     }
 
+    /**
+     * Creates the status text with various information on the game.
+     * Includes the number of player pieces per player, whose turn it is and when game
+     * is over who won.
+     * @return A Horizontal Box with the game status texts aligned correctly and in order.
+     */
     private HBox createStatusText() {
         HBox statusText = new HBox(10);
         updateText();
@@ -85,6 +117,11 @@ public class OthelloScene extends Scene implements Observer {
         return statusText;
     }
 
+    /**
+     * Creates a basic green square with a black outline around it.
+     * @param size The size of the square
+     * @return A square green square with a black outline of the size provided
+     */
     private Rectangle createSquare(double size) {
         Rectangle square = new Rectangle(size, size);
         square.setFill(Color.GREEN);
@@ -92,6 +129,12 @@ public class OthelloScene extends Scene implements Observer {
         return square;
     }
 
+    /**
+     * Creates a basic circle aligning it to the center of a square of size.
+     * @param size The size of the square to align to
+     * @param color The color of the circle
+     * @return A circle with the color and size.
+     */
     private Circle createCircle(double size, Color color) {
         Circle circle = new Circle(size / 2, color);
         circle.setCenterX(size / 2);
@@ -101,6 +144,13 @@ public class OthelloScene extends Scene implements Observer {
         return circle;
     }
 
+    /**
+     * Creates piece of either black or red, setting it on a green square with a circle representing
+     * the piece.
+     * @param size The size of the piece.
+     * @param player The player belonging to that piece
+     * @return A StackPane containing the board and piece.
+     */
     private StackPane createPiece(double size, char player) {
         StackPane stackPane = new StackPane();
         Rectangle square = createSquare(size);
@@ -109,6 +159,12 @@ public class OthelloScene extends Scene implements Observer {
         return stackPane;
     }
 
+    /**
+     * Creates the OthelloGrid creating a basic board with no pieces on it.
+     * @param grid The grid to set the board on.
+     * @param visitor The OthelloBoardPiecesVisitor to provide the pieces on the board.
+     * @param size The size of the board grids squares.
+     */
     private void createOthelloGrid(GridPane grid, OthelloBoardPiecesVisitor visitor, double size) {
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
@@ -121,6 +177,10 @@ public class OthelloScene extends Scene implements Observer {
         }
     }
 
+    /**
+     * Creates the OthelloBoard with the board and the pieces on the board.
+     * @return a GridPane containing the OthelloBoard grid and the pieces on it.
+     */
     private GridPane createOthelloBoard() {
         final double size = 50;
         GridPane grid = new GridPane();
@@ -131,6 +191,9 @@ public class OthelloScene extends Scene implements Observer {
         return grid;
     }
 
+    /**
+     * Gets the next move for a player. Used for bot strategies of the player is a bot.
+     */
     private void getNextMove() {
         Platform.runLater(() -> {
             if (!hasMove()) return;
@@ -145,12 +208,20 @@ public class OthelloScene extends Scene implements Observer {
         });
     }
 
+    /**
+     * Gets if the player should move automatically, moving if the player is not a human.
+     * @return
+     */
     private boolean hasMove() {
         if (getOthello().isGameOver() || getOthello().getWhosTurn() == OthelloBoard.EMPTY) return false;
         if (getOthello().getWhosTurn() == OthelloBoard.P1) return !(game.getPlayer1() instanceof PlayerHuman);
         return !(game.getPlayer2() instanceof PlayerHuman);
     }
 
+    /**
+     * Move on the board if possible, and executing a move command.
+     * @param move The move to perform.
+     */
     private void move(Move move) {
         if (!getOthello().copy().move(move.getRow(), move.getCol())) return;
         getOthello().attach(this);
@@ -158,20 +229,35 @@ public class OthelloScene extends Scene implements Observer {
         getOthello().detach(this);
     }
 
+    /**
+     * Undo the last move and update the drawn board.
+     */
     private void undo() {
         game.getCommandManager().undo();
         updateBoard();
     }
 
+    /**
+     * Redo the last move and update the drawn board.
+     */
     private void redo() {
         game.getCommandManager().redo();
         updateBoard();
     }
 
+    /**
+     * Handle a click on the square and attempt to make a move at the
+     * provided row and col.
+     * @param row The row to move to.
+     * @param col The col to move to.
+     */
     private void handleOnSquareClick(int row, int col) {
         move(new Move(row, col));
     }
 
+    /**
+     * Update the board that's being drawn.
+     */
     private void updateBoard() {
         game.setOthello(getOthello());
         othelloGrid.getChildren().setAll(createOthelloBoard().getChildren());
@@ -183,6 +269,9 @@ public class OthelloScene extends Scene implements Observer {
         return game.getOthello();
     }
 
+    /**
+     * Update the text that is being drawn.
+     */
     private void updateText() {
         StringBuilder builder;
         if (getOthello().isGameOver()) {

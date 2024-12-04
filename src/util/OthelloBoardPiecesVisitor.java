@@ -5,6 +5,10 @@ import othello.model.OthelloBoard;
 
 import java.util.HashMap;
 
+/**
+ * Implements the visitor design pattern for OthelloBoards to
+ * get the pieces on the othello board.
+ */
 public class OthelloBoardPiecesVisitor implements Visitor {
     private final HashMap<Move, Character> pieces = new HashMap<>();
 

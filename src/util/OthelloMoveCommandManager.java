@@ -5,6 +5,10 @@ import othello.model.Othello;
 import java.io.Serializable;
 import java.util.Stack;
 
+/**
+ * An Othello move command manager that keeps track of OthelloMoveCommands
+ * execute commands and to keep track of order of move commands and undo or redo if necessary.
+ */
 public class OthelloMoveCommandManager implements Serializable {
     private Othello othello;
     private final Stack<OthelloMoveCommand> undoStack = new Stack<>();

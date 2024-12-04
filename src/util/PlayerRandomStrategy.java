@@ -2,6 +2,9 @@ package util;
 
 import othello.model.*;
 
+/**
+ * Implements the strategy design pattern for Player Random
+ */
 public class PlayerRandomStrategy implements PlayerStrategy{
     private final Player player;
 

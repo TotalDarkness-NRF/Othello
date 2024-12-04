@@ -5,6 +5,9 @@ import othello.model.Othello;
 import othello.model.Player;
 import othello.model.PlayerGreedy;
 
+/**
+ * Implements the strategy design pattern for Player Greedy
+ */
 public class PlayerGreedyStrategy implements PlayerStrategy {
     private final Player player;
 
