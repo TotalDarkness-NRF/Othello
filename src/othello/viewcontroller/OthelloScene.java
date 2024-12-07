@@ -210,7 +210,6 @@ public class OthelloScene extends Scene implements Observer {
 
     /**
      * Gets if the player should move automatically, moving if the player is not a human.
-     * @return
      */
     private boolean hasMove() {
         if (getOthello().isGameOver() || getOthello().getWhosTurn() == OthelloBoard.EMPTY) return false;
