@@ -1,21 +1,20 @@
-package othello.test;
+package net.totaldarkness;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Before;
-import org.junit.Before;
-import org.junit.Test;
+import net.totaldarkness.othello.model.Move;
+import net.totaldarkness.othello.model.Othello;
+import net.totaldarkness.othello.model.OthelloBoard;
 
-import othello.model.Move;
-import othello.model.Othello;
-import othello.model.OthelloBoard;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class OthelloTest {
 	Othello othello;
 	Move[] moves = { new Move(2, 4), new Move(2, 5), new Move(2, 6), new Move(2, 3), new Move(2, 2), new Move(3, 2),
 			new Move(4, 2), new Move(5, 4), new Move(6, 4) };
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		othello = new Othello();
 		othello.move(2, 4);
@@ -90,21 +89,21 @@ public class OthelloTest {
 	@Test
 	public void testGetWinner() {
 		Othello o=new Othello();
-		for(int i=0;i<moves.length;i++) {
-			assertEquals("During play", o.getWinner(), OthelloBoard.EMPTY);
-			o.move(moves[i].getRow(), moves[i].getCol());
-		}
-		assertEquals("After winner", o.getWinner(), OthelloBoard.P1);
+        for (Move move : moves) {
+            assertEquals(o.getWinner(), OthelloBoard.EMPTY, "During play");
+            o.move(move.getRow(), move.getCol());
+        }
+		assertEquals(o.getWinner(), OthelloBoard.P1, "After winner");
 	}
 
 	@Test
 	public void testIsGameOver() {
 		Othello o=new Othello();
 		for(int i=0;i<moves.length;i++) {
-			assertEquals("During play", o.isGameOver(), false);
+            assertFalse(o.isGameOver(), "During play");
 			o.move(moves[i].getRow(), moves[i].getCol());
 		}
-		assertEquals("After winner", o.isGameOver(), true);
+        assertTrue(o.isGameOver(), "After winner");
 	}
 
 }

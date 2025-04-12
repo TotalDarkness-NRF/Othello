@@ -1,21 +1,19 @@
-package othello.test;
+package net.totaldarkness;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import net.totaldarkness.othello.model.Move;
+import net.totaldarkness.othello.model.Othello;
+import net.totaldarkness.othello.model.OthelloBoard;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import othello.model.Move;
-import othello.model.Othello;
-import othello.model.OthelloBoard;
-
+import static org.junit.jupiter.api.Assertions.*;
 
 public class OthelloBoardTest {
 	OthelloBoard board;
 	Move[] moves = { new Move(2, 4), new Move(2, 5), new Move(2, 6), new Move(2, 3), new Move(2, 2), new Move(3, 2),
 			new Move(4, 2), new Move(5, 4), new Move(6, 4) };
 	
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		board=new OthelloBoard(Othello.DIMENSION); // 8x8 board
 		board.move(2, 4, OthelloBoard.P1);
@@ -75,15 +73,15 @@ public class OthelloBoardTest {
 	public void testOthelloBoard() {
 		OthelloBoard b=new OthelloBoard(Othello.DIMENSION);
 		// Check initial position
-		assertEquals("Initial tokens P1",b.get(3, 3), OthelloBoard.P1);
-		assertEquals("Initial tokens P1",b.get(4, 4), OthelloBoard.P1);
-		assertEquals("Initial tokens P2",b.get(3, 4), OthelloBoard.P2);
-		assertEquals("Initial tokens P2",b.get(4, 3), OthelloBoard.P2);
+		assertEquals(b.get(3, 3), OthelloBoard.P1, "Initial tokens P1");
+		assertEquals(b.get(4, 4), OthelloBoard.P1, "Initial tokens P1");
+		assertEquals(b.get(3, 4), OthelloBoard.P2, "Initial tokens P2");
+		assertEquals(b.get(4, 3), OthelloBoard.P2, "Initial tokens P2");
 		
 		for(int row=0;row<Othello.DIMENSION;row++) {
 			for(int col=0;col<Othello.DIMENSION;col++) {
 				if((row==3 || row==4) && (col==3 ||col==4))continue;
-				assertEquals("Initial empty spots",b.get(row, col),OthelloBoard.EMPTY);
+				assertEquals(b.get(row, col),OthelloBoard.EMPTY, "Initial empty spots");
 			}
 		}
 		
@@ -95,17 +93,17 @@ public class OthelloBoardTest {
 		int dim=Othello.DIMENSION;
 		OthelloBoard b=new OthelloBoard(Othello.DIMENSION);
 
-		assertEquals("Off board get",b.get(-7,12), OthelloBoard.EMPTY);
-		assertEquals("Off board get",b.get(3,11), OthelloBoard.EMPTY);
-		assertEquals("Off board get",b.get(11,3), OthelloBoard.EMPTY);
-		assertEquals("Off board get",b.get(22,22), OthelloBoard.EMPTY);
-		assertEquals("Off board get",b.get(0,dim), OthelloBoard.EMPTY);
-		assertEquals("Off board get",b.get(dim,0), OthelloBoard.EMPTY);
+		assertEquals(b.get(-7,12), OthelloBoard.EMPTY, "Off board get");
+		assertEquals(b.get(3,11), OthelloBoard.EMPTY, "Off board get");
+		assertEquals(b.get(11,3), OthelloBoard.EMPTY, "Off board get");
+		assertEquals(b.get(22,22), OthelloBoard.EMPTY, "Off board get");
+		assertEquals(b.get(0,dim), OthelloBoard.EMPTY, "Off board get");
+		assertEquals(b.get(dim,0), OthelloBoard.EMPTY, "Off board get");
 		
-		assertEquals("On board get P1",b.get(3, 3), OthelloBoard.P1);
-		assertEquals("On board get P1",b.get(4, 4), OthelloBoard.P1);
-		assertEquals("On board get P2",b.get(3, 4), OthelloBoard.P2);
-		assertEquals("On board get P2",b.get(4, 3), OthelloBoard.P2);
+		assertEquals(b.get(3, 3), OthelloBoard.P1, "On board get P1");
+		assertEquals(b.get(4, 4), OthelloBoard.P1, "On board get P1");
+		assertEquals(b.get(3, 4), OthelloBoard.P2, "On board get P2");
+		assertEquals(b.get(4, 3), OthelloBoard.P2, "On board get P2");
 	}
 
 	@Test
@@ -149,15 +147,15 @@ public class OthelloBoardTest {
 		assertEquals(board.get(2,7), OthelloBoard.EMPTY);
 		
 		String beforeMove=board.toString(); // To verify that the board has not changed
-		assertFalse("bad move spot occupied", board.move(2, 3, OthelloBoard.P1));
-		assertTrue("board unchanged for bad move",beforeMove.equals(board.toString())); 
-		assertFalse("bad move spot occupied", board.move(2, 4, OthelloBoard.P1));
-		assertTrue("board unchanged for bad move",beforeMove.equals(board.toString())); 
+		assertFalse(board.move(2, 3, OthelloBoard.P1), "bad move spot occupied");
+        assertEquals(beforeMove, board.toString(), "board unchanged for bad move");
+		assertFalse(board.move(2, 4, OthelloBoard.P1), "bad move spot occupied");
+        assertEquals(beforeMove, board.toString(), "board unchanged for bad move");
 	
-		assertFalse("bad move no neighbours", board.move(4, 0, OthelloBoard.P1));
-		assertTrue("board unchanged for bad move",beforeMove.equals(board.toString())); 
-		assertFalse("bad move no flips", board.move(3, 5, OthelloBoard.P1));
-		assertTrue("board unchanged for bad move",beforeMove.equals(board.toString())); 
+		assertFalse(board.move(4, 0, OthelloBoard.P1), "bad move no neighbours");
+        assertEquals(beforeMove, board.toString(), "board unchanged for bad move");
+		assertFalse(board.move(3, 5, OthelloBoard.P1), "bad move no flips");
+        assertEquals(beforeMove, board.toString(), "board unchanged for bad move");
 		
 		// row: col: X makes move (2,2)
 		assertTrue(board.move(2, 2, OthelloBoard.P1));
@@ -185,10 +183,10 @@ public class OthelloBoardTest {
 
 	@Test
 	public void testGetCount() {
-		assertEquals("counting P1",board.getCount(OthelloBoard.P1),4);
-		assertEquals("counting P2",board.getCount(OthelloBoard.P2),4);
+		assertEquals(board.getCount(OthelloBoard.P1),4, "counting P1");
+		assertEquals(board.getCount(OthelloBoard.P2),4, "counting P2");
 		board.move(2, 2, OthelloBoard.P1);
-		assertEquals("counting P1",board.getCount(OthelloBoard.P1),7);
-		assertEquals("counting P2",board.getCount(OthelloBoard.P2),2);
+		assertEquals(board.getCount(OthelloBoard.P1),7, "counting P1");
+		assertEquals(board.getCount(OthelloBoard.P2),2, "counting P2");
 	}
 }
