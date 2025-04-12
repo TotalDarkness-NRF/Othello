@@ -8,8 +8,8 @@
 # === Ignore everything in /gradle except wrapper files ===
 /gradle/*
 !/gradle/wrapper/
-/gradle/wrapper/gradle-wrapper.properties
-/gradle/wrapper/gradle-wrapper.jar
+!/gradle/wrapper/gradle-wrapper.properties
+!/gradle/wrapper/gradle-wrapper.jar
 
 # === Gradle wrapper scripts ===
 !gradlew
