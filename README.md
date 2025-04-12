@@ -10,10 +10,14 @@ where the goal is to have the majority of discs in your color on the board at th
       <img src="https://github.com/user-attachments/assets/9ca116b2-5c63-4643-8875-d573cb2cb74c" height="200" width="200"><br>
       <sub>Main menu</sub>
     </td>
+  </tr>
+  <tr>
     <td align="center">
       <img src="https://github.com/user-attachments/assets/4918954a-e4da-4ef0-82a6-c154891e2543" height="200" width="200"><br>
       <sub>Player selecter</sub>
     </td>
+    </tr>
+  <tr>
     <td align="center">
       <img src="https://github.com/user-attachments/assets/96b03075-96ce-4648-88d8-766bbd642233" height="200" width="200"><br>
       <sub>Othello gameplay</sub>
@@ -54,7 +58,7 @@ where the goal is to have the majority of discs in your color on the board at th
    Example: OthelloControllerHumanVSHuman plays to human players on the terminal.
 
 ## Gameplay Instructions
-- Player 1 uses the `X` or 'Black' pieces and Player 2 uses the `O` or 'White' 'pieces.
+- Player 1 uses the `X` or 'Black' pieces and Player 2 uses the `O` or 'White' pieces.
 - Players take turns placing their pieces on the board. The piece is placed on an empty space where it surrounds one or more of the opponent's pieces between the newly placed piece and another of the player's own pieces.
 - Once all valid moves are exhausted, the player with the most pieces of their color wins.
 - **Board Size**: The Othello board is an 8x8 grid.
