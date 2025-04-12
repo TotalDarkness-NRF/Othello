@@ -1,8 +1,52 @@
-bin
-### IntelliJ IDEA ###
-.idea
-*.iws
+# === Build output ===
+/build/
+/out/
+
+# === Gradle cache ===
+.gradle/
+
+# === Ignore everything in /gradle except wrapper files ===
+/gradle/*
+!/gradle/wrapper/
+/gradle/wrapper/gradle-wrapper.properties
+/gradle/wrapper/gradle-wrapper.jar
+
+# === Gradle wrapper scripts ===
+!gradlew
+!gradlew.bat
+
+# === IDEs ===
+
+# IntelliJ
+.idea/
 *.iml
+*.iws
 *.ipr
-*.eml
-*.userlibraries
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# VSCode
+.vscode/
+
+# === OS / Misc ===
+.DS_Store
+Thumbs.db
+
+# === Java compiled classes ===
+*.class
+
+# === Logs and reports ===
+*.log
+/test-results/
+/test-report/
+/coverage/
+/reports/
+
+# === Temporary files ===
+*.tmp
+*.swp
+*.bak
+*.orig
